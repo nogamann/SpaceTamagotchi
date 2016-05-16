@@ -1,0 +1,10 @@
+# Ignore user specific directories: 
+Temp/
+obj/
+Library
+
+# Ignore user specific preferences:
+*.csproj
+*.sln
+*.userprefs
+
