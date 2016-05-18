@@ -4,7 +4,7 @@ using System.Collections;
 public class MoodObject : MonoBehaviour {
 
 	// functions to implement:
-		// madadetion update
+		// metersUpdate update
 		// play animation
 
 	// Use this for initialization

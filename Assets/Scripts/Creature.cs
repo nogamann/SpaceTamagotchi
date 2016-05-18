@@ -10,6 +10,7 @@ public class Creature : MonoBehaviour {
 	float hunger;
 	float health;
 	float joy;
+	MoodObject currentMood;
 
 	// methods to implement
 	// play
@@ -19,6 +20,9 @@ public class Creature : MonoBehaviour {
 		// 
 
 	// takeMedicine
+
+	// applyMood
+		// change currentMood
 
 	// Use this for initialization
 	void Start () {
