@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NewBehaviourScript : MonoBehaviour {
+public class MoodObject : MonoBehaviour {
+
+	// functions to implement:
+		// madadetion update
+		// play animation
 
 	// Use this for initialization
 	void Start () {

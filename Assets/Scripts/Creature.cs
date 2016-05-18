@@ -17,6 +17,7 @@ public class Creature : MonoBehaviour {
 
 	// eat
 		// 
+
 	// takeMedicine
 
 	// Use this for initialization
