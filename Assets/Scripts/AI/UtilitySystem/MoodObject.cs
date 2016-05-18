@@ -1,19 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoodObject : MonoBehaviour {
+public abstract class MoodObject : MonoBehaviour {
 
-	// functions to implement:
-		// metersUpdate update
-		// play animation
+	/// <summary>
+	/// Updates the creature's meters.
+	/// </summary>
+	protected abstract void updateMeters ();
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	/// <summary>
+	/// Plaies the right animation of the creature according to the current mood.
+	/// </summary>
+	protected abstract void playAnimation ();
 }
