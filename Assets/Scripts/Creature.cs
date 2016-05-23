@@ -8,54 +8,49 @@ public class Creature : MonoBehaviour {
 	public float hunger = 0.5f;
 	public float health = 0.5f;
 	public float joy = 0.5f;
-	public float playrOneLove = 0.5f;
+	public float playerOneLove = 0.5f;
 	public float playrTwoLove = 0.5f;
+	public float generalLove = 0.5f;
 	// TODO: should be updated everytime love changes
-	public float generalLove = (playrOneLove + playrTwoLove) / 2;
+//	public float generalLove = (playrOneLove + playrTwoLove) / 2;
 
-	// moods
-	Dictionary<string, Dictionary<string, float>> moods = new Dictionary<string, Dictionary<string, float>> {
-		{new KeyValuePair<string, Dictionary<string, float>> (
-			"happy", 
-				new Dictionary<string, float> {
-				{"interval", 0.01f},
-				{"decrease", 0.01f},
-				{"joyCoefficient", 0.0f},
-				{"healthCoefficient", 0.0f},
-				{"hungerCoefficient", 0.0f},
-				{"playerOneLoveCoefficient", 0.0f},
-				{"playerTwoLoveCoefficient", 0.0f},
-				{"generalLoveCoefficient", 0.0f},
-				{"score", 0}
-		})},
-		{new KeyValuePair<string, Dictionary<string, float>> (
-			"sad", 
-			new Dictionary<string, float> {
-				{"interval", 0.01f},
-				{"decrease", 0.01f},
-				{"joyCoefficient", 0.0f},
-				{"healthCoefficient", 0.0f},
-				{"hungerCoefficient", 0.0f},
-				{"playerOneLoveCoefficient", 0.0f},
-				{"playerTwoLoveCoefficient", 0.0f},
-				{"generalLoveCoefficient", 0.0f},
-				{"score", 0}
-			})},
-		{new KeyValuePair<string, Dictionary<string, float>> (
-			"bored", 
-			new Dictionary<string, float> {
-				{"interval", 0.01f},
-				{"decrease", 0.01f},
-				{"joyCoefficient", 0.8f},
-				{"healthCoefficient", 0.0f},
-				{"hungerCoefficient", 0.0f},
-				{"playerOneLoveCoefficient", 0.0f},
-				{"playerTwoLoveCoefficient", 0.0f},
-				{"generalLoveCoefficient", 0.2f},
-				{"score", 0}
-			})}
-		// TODO add more moods
-	};
+	// a dictionary to hold the available moods of the creature
+	Dictionary<string, Dictionary<string, float>> moods = new Dictionary<string, Dictionary<string, float>> ();
+
+
+	// dictionaries for the moods of the creature. Every possible mood is represented by a dictionary.
+	Dictionary<string, float> happy = new Dictionary<string, float> ();
+	Dictionary<string, float> bored = new Dictionary<string, float> ();
+	// TODO add more moods
+
+	/// <summary>
+	/// Initializes the moods dictionaries.
+	/// </summary>
+	private void initMoodDictionaries() {
+		// init happy
+		happy.Add("interval", 0.01f);
+		happy.Add("decrease", 0.01f);
+		happy.Add("joyCoefficient", 0.0f);
+		happy.Add("healthCoefficient", 0.0f);
+		happy.Add("hungerCoefficient", 0.0f);
+		happy.Add("playerOneLoveCoefficient", 0.0f);
+		happy.Add("score", 0.0f);
+
+		// init bored
+		bored.Add("interval", 0.01f);
+		bored.Add("decrease", 0.01f);
+		bored.Add("joyCoefficient", 0.8f);
+		bored.Add("healthCoefficient", 0.0f);
+		bored.Add("hungerCoefficient", 0.0f);
+		bored.Add("playerOneLoveCoefficient", 0.0f);
+		bored.Add("playerTwoLoveCoefficient", 0.0f);
+		bored.Add("generalLoveCoefficient", 0.2f);
+		bored.Add("score", 0.0f);
+
+		// init the moods dictionary
+		moods.Add ("happy", happy);
+		moods.Add ("bored", bored);
+	}
 
 	public string currentMood;
 
@@ -97,7 +92,7 @@ public class Creature : MonoBehaviour {
 
 	public float LovePlayrOne {
 		get {
-			return playrOneLove;
+			return playerOneLove;
 		}
 		set {
 			LovePlayrOne = value;
@@ -129,10 +124,10 @@ public class Creature : MonoBehaviour {
 	void DoAction(ThingObject thing){
 		//TODO: play relevant animation
 
-		health += (thing.Health * health^3);
-		hunger += (thing.Hunger * hunger^3);
+		health += (thing.Health * Mathf.Pow(health, 3));
+		hunger += (thing.Hunger * Mathf.Pow(hunger, 3));
 		// TODO: change the love of the current player only
-		playrOneLove += (thing.Love * playrOneLove^3);
+		playerOneLove += (thing.Love * Mathf.Pow(playerOneLove, 3));
 
 	}
 
@@ -152,7 +147,7 @@ public class Creature : MonoBehaviour {
 
 
 		float moodScore = (1 - health) * healthCoefficient + (1 - hunger) * hungerCoefficient + (1 - generalLove) * generalLoveCoefficient +
-			(1 - joy) * joyCoefficient + (1 - playrOneLove) * playerOnelLoveCoefficient + (1 - playrTwoLove) * playerTwoLoveCoefficient;
+			(1 - joy) * joyCoefficient + (1 - playerOneLove) * playerOnelLoveCoefficient + (1 - playrTwoLove) * playerTwoLoveCoefficient;
 
 		return moodScore;
 	}
@@ -176,7 +171,7 @@ public class Creature : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		initMoodDictionaries ();
 	}
 	
 	// Update is called once per frame
