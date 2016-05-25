@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Creature : MonoBehaviour {
+
+	// parameters enum
+	enum Parameters{
+		// TODO
+	}
 
 	// meters
 	public float hunger = 0.5f;
@@ -74,6 +80,8 @@ public class Creature : MonoBehaviour {
 
 		// TODO: change the love of the current player only
 		playerOneLove += (thing.Love * Mathf.Pow(playerOneLove, 3));
+
+		// TODO add impact of the love to the performing player (should be implemented as a formula in the enum)
 	}
 
 	/// <summary>
@@ -121,7 +129,7 @@ public class Creature : MonoBehaviour {
 		if ((time - joyUpdate) >= joyInterval) {
 			joy -= moods [currentMood] ["joyDecrease"];
 		}
-
+		// TODO update the rest of the meters (update meters should take place as the example in FixedUpdate function)
 	}
 
 	// Use this for initialization
@@ -147,6 +155,14 @@ public class Creature : MonoBehaviour {
 
 		// update mood
 		CalculateAndUpdateMood ();
+	}
+
+	void FixedUpdate() {
+		// TODO update meter example, don't forget to remove!
+		float meter = 0;
+		float change = -0.002f; // in seconds * -1
+
+		meter += change * Time.fixedDeltaTime;
 	}
 
 
@@ -212,6 +228,47 @@ public class Creature : MonoBehaviour {
 		}
 		set {
 			LoveGeneral = value;
+		}
+	}
+		
+	public class moodClass {
+		// TODO needed?
+	}
+
+	/// <summary>
+	/// Formula component.
+	/// </summary>
+	[Serializable]
+	public class FormulaComponent {
+		/// <summary>
+		/// The name of the formula component as it appears in the enum.
+		/// </summary>
+		public Parameters parameter;
+
+		/// <summary>
+		/// The value of the component.
+		/// </summary>
+		public float value;
+	}
+
+	public class Formua {
+		/// <summary>
+		/// The name of the formula as it appears in the Parameters enum.
+		/// </summary>
+		public Parameters parameter;
+
+		/// <summary>
+		/// The components of the formula.
+		/// </summary>
+		public FormulaComponent[] components;
+
+		/// <summary>
+		/// Evaluates the formula.
+		/// </summary>
+		/// <returns>The formula.</returns>
+		public float EvaluateFormula() {
+			// TODO sum all of the formula's components and return result as float.
+			return 0f;
 		}
 	}
 }
