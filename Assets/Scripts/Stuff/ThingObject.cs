@@ -3,11 +3,21 @@ using System.Collections;
 
 public class ThingObject : MonoBehaviour {
 
+    public enum ItemType
+    {
+        Food,
+        Game,
+        Medicine
+    }
+
 	// Fileds
-	protected float health;
-	protected float love;
-	protected float hunger;
-	protected float joy;
+	public float health;
+	public float love;
+	public float hunger;
+	public float joy;
+    public ItemType itemType;
+
+
 
 	public float Joy {
 		get {
@@ -44,6 +54,7 @@ public class ThingObject : MonoBehaviour {
 			health = value;
 		}
 	}
+
 
 	// Use this for initialization
 	void Start () {

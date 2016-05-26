@@ -7,8 +7,8 @@ public class Creature : MonoBehaviour {
 	// fields (meters):
 	public float lovePlayrOne = 0.5f;
 	public float lovePlayrTwo = 0.5f;
-	// TODO: should be updated everytime love changes
-	public float loveGeneral = (lovePlayrOne + lovePlayrTwo) / 2;
+    // TODO: should be updated everytime love changes
+    public float loveGeneral = 0.5f; //(lovePlayrOne + lovePlayrTwo) / 2;
 	public float hunger = 0.5f;
 	public float health = 0.5f;
 	public float joy = 0.5f;
@@ -82,12 +82,12 @@ public class Creature : MonoBehaviour {
 	/// </summary>
 	/// <param name="thing">food, toy or medicine.</param>
 	void DoAction(ThingObject thing){
-		//TODO: play relevant animation
+        //TODO: play relevant animation
 
-		health += (thing.Health * health^3);
-		hunger += (thing.Hunger * hunger^3);
-		// TODO: change the love of the current player only
-		lovePlayrOne += (thing.Love * lovePlayrOne^3);
+        health += (thing.Health); // * health^3);
+        hunger += (thing.Hunger); // * hunger^3);
+                                  // TODO: change the love of the current player only
+        lovePlayrOne += (thing.Love); // * lovePlayrOne^3);
 
 	}
 		
@@ -97,21 +97,21 @@ public class Creature : MonoBehaviour {
 	void CalculateAndUpdateMood(){
 		Dictionary<MoodObject, float> moodsDict;
 
-		moodsDict.Add(bored, (1 - joy) * 0.8f + (1 - loveGeneral) * 0.2f);
-		moodsDict.Add(sick, (1 - health) * 0.7f + (1 - hunger) * 0.2f + (1 - loveGeneral) * 0.1f);
-		moodsDict.Add(hungry, (1 - hunger) * 0.5f + (1 - joy) * 0.3f + (1 - loveGeneral) * 0.1f + (1 - health) * 0.1f);
-		moodsDict.Add(angry, (1 - loveGeneral) * 0.4f + (1 - joy) * 0.3f + (1 - hunger) * 0.3f);
-		moodsDict.Add(happy, (hunger + joy + loveGeneral + health) / 4.0f);
-		moodsDict.Add(sad, 1 - moodsDict[happy]);
+		//moodsDict.Add(bored, (1 - joy) * 0.8f + (1 - loveGeneral) * 0.2f);
+		//moodsDict.Add(sick, (1 - health) * 0.7f + (1 - hunger) * 0.2f + (1 - loveGeneral) * 0.1f);
+		//moodsDict.Add(hungry, (1 - hunger) * 0.5f + (1 - joy) * 0.3f + (1 - loveGeneral) * 0.1f + (1 - health) * 0.1f);
+		//moodsDict.Add(angry, (1 - loveGeneral) * 0.4f + (1 - joy) * 0.3f + (1 - hunger) * 0.3f);
+		//moodsDict.Add(happy, (hunger + joy + loveGeneral + health) / 4.0f);
+		//moodsDict.Add(sad, 1 - moodsDict[happy]);
 
-		KeyValuePair<MoodObject, float> highestMood = moodsDict [0];
-		foreach (KeyValuePair<MoodObject, float> mood in moodsDict) {
-			if (mood.Value > highestMood.Value) {
-				highestMood = mood;
-			}
-		}
+		//KeyValuePair<MoodObject, float> highestMood = moodsDict [0];
+		//foreach (KeyValuePair<MoodObject, float> mood in moodsDict) {
+		//	if (mood.Value > highestMood.Value) {
+		//		highestMood = mood;
+		//	}
+		//}
 
-		currentMood = highestMood;
+		//currentMood = highestMood;
 	}
 
 	// Use this for initialization
@@ -126,4 +126,31 @@ public class Creature : MonoBehaviour {
 		// update mood
 		CalculateAndUpdateMood ();
 	}
+
+    public void tickled()
+    {
+        //TODO: play tickle animation
+        this.loveGeneral += 0.03f;
+        this.joy += 0.03f;
+    }
+
+    public void onTriggerEnter(Collider2D other)
+    {
+        ThingObject thingObjectScript = other.GetComponent<ThingObject>();
+        if (thingObjectScript != null)
+        {
+            DoAction(thingObjectScript);
+
+            switch (thingObjectScript.itemType)
+            {
+                case ThingObject.ItemType.Game:
+                        break;
+                    
+                case ThingObject.ItemType.Food:
+                    Destroy(other);
+                    Debug.Log("yummy");
+                    break;
+            }
+        }
+    }
 }
