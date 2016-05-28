@@ -119,18 +119,18 @@ public class Creature : MonoBehaviour
     void CalculateAndUpdateMood()
     {
         // TODO maybe need a different init?
-        string nextMood = "bored";
+    //    string nextMood = "bored";
 
-        foreach (var mood in moods)
-        {
-            mood.Value["score"] = CalculateMoodScore(mood.Key);
-            if (mood.Value["score"] > moods[nextMood]["score"])
-            {
-                nextMood = mood.Key;
-            }
-        }
+    //    foreach (var mood in moods)
+    //    {
+    //        mood.Value["score"] = CalculateMoodScore(mood.Key);
+    //        if (mood.Value["score"] > moods[nextMood]["score"])
+    //        {
+    //            nextMood = mood.Key;
+    //        }
+    //    }
 
-        currentMood = nextMood;
+    //    currentMood = nextMood;
     }
 
     void UpdateMeters()
