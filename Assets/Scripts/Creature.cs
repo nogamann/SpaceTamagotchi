@@ -9,7 +9,10 @@ public class Creature : MonoBehaviour
     // parameters enum
     public enum Parameters
     {
-        // TODO
+		// mood formulas
+
+		// behavior formulas
+
     }
 
     // meters
@@ -287,6 +290,10 @@ public class Creature : MonoBehaviour
         public float value;
     }
 
+	/// <summary>
+	/// Represents Formua.
+	/// </summary>
+	[Serializable]
     public class Formua
     {
         /// <summary>
