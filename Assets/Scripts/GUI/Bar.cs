@@ -34,9 +34,10 @@ public class Bar : MonoBehaviour
                 break;
 
             case BarType.LoveBar:
-                scrollBar.size = creature.loveGeneral;
+                scrollBar.size = creature.generalLove;
                 break;
 
+                //TODO add cases for playerOneLove and playerTwoLove
             default:
                 break;
         }
