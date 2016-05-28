@@ -41,6 +41,5 @@ public class Bar : MonoBehaviour
             default:
                 break;
         }
-        
     }
 }

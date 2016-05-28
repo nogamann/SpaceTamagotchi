@@ -5,20 +5,36 @@ using System;
 
 public class Creature : MonoBehaviour
 {
-
-    // parameters enum
+	/// <summary>
+	/// Parameters enum. Holds mood coefficients, mood formulas and behavior formulas
+	/// Names of coefficient parameters begin with 'c' and names of formulas begin with 'f', followed 
+	/// by the mood/behavior/operation that it belomngs to and ends with the meter that it will affect.
+	/// </summary>
     public enum Parameters
     {
-		// mood formulas
-
-		// behavior formulas
-
+		cDecreaseJoy,
+		cDecreaseHealth,
+		cDecreaseHunger,
+		cDecreaseGeneralLove,
+		cHappyJoy,
+		cHappyHealth,
+		cHappyHunger,
+		cHappyGeneralLove,
+		fHappy
     }
 
+	public enum Meters
+	{
+		joy,
+		health,
+		hunger,
+		generalLove
+	}
+
     // meters
+	public float joy = 0.5f;
+	public float health = 0.5f;
     public float hunger = 0.5f;
-    public float health = 0.5f;
-    public float joy = 0.5f;
     public float playerOneLove = 0.5f;
     public float playrTwoLove = 0.5f;
     public float generalLove = 0.5f;
@@ -33,43 +49,46 @@ public class Creature : MonoBehaviour
     public float playrTwoLoveUpdate;
     public float generalLoveUpdate;
 
+	public Formua[] _formulas;
+	Dictionary<Parameters, Formua> formulas;
+
     // A dictionary to hold the available moods of the creature
-    Dictionary<string, Dictionary<string, float>> moods = new Dictionary<string, Dictionary<string, float>>();
-
-    // Dictionaries for the moods of the creature. Every possible mood is represented by a dictionary.
-    Dictionary<string, float> happy = new Dictionary<string, float>();
-    Dictionary<string, float> bored = new Dictionary<string, float>();
-    // TODO add more moods
-
-    /// <summary>
-    /// Initializes the moods dictionaries.
-    /// </summary>
-    private void InitMoodDictionaries()
-    {
-        // init happy
-        happy.Add("interval", 0.01f);
-        happy.Add("decrease", 0.01f);
-        happy.Add("joyCoefficient", 0.0f);
-        happy.Add("healthCoefficient", 0.0f);
-        happy.Add("hungerCoefficient", 0.0f);
-        happy.Add("playerOneLoveCoefficient", 0.0f);
-        happy.Add("score", 0.0f);
-
-        // init bored
-        bored.Add("interval", 0.01f);
-        bored.Add("decrease", 0.01f);
-        bored.Add("joyCoefficient", 0.8f);
-        bored.Add("healthCoefficient", 0.0f);
-        bored.Add("hungerCoefficient", 0.0f);
-        bored.Add("playerOneLoveCoefficient", 0.0f);
-        bored.Add("playerTwoLoveCoefficient", 0.0f);
-        bored.Add("generalLoveCoefficient", 0.2f);
-        bored.Add("score", 0.0f);
-
-        // init the moods dictionary
-        moods.Add("happy", happy);
-        moods.Add("bored", bored);
-    }
+//    Dictionary<string, Dictionary<string, float>> moods = new Dictionary<string, Dictionary<string, float>>();
+//
+//    // Dictionaries for the moods of the creature. Every possible mood is represented by a dictionary.
+//    Dictionary<string, float> happy = new Dictionary<string, float>();
+//    Dictionary<string, float> bored = new Dictionary<string, float>();
+//    // TODO add more moods
+//
+//    /// <summary>
+//    /// Initializes the moods dictionaries.
+//    /// </summary>
+//    private void InitMoodDictionaries()
+//    {
+//        // init happy
+//        happy.Add("interval", 0.01f);
+//        happy.Add("decrease", 0.01f);
+//        happy.Add("joyCoefficient", 0.0f);
+//        happy.Add("healthCoefficient", 0.0f);
+//        happy.Add("hungerCoefficient", 0.0f);
+//        happy.Add("playerOneLoveCoefficient", 0.0f);
+//        happy.Add("score", 0.0f);
+//
+//        // init bored
+//        bored.Add("interval", 0.01f);
+//        bored.Add("decrease", 0.01f);
+//        bored.Add("joyCoefficient", 0.8f);
+//        bored.Add("healthCoefficient", 0.0f);
+//        bored.Add("hungerCoefficient", 0.0f);
+//        bored.Add("playerOneLoveCoefficient", 0.0f);
+//        bored.Add("playerTwoLoveCoefficient", 0.0f);
+//        bored.Add("generalLoveCoefficient", 0.2f);
+//        bored.Add("score", 0.0f);
+//
+//        // init the moods dictionary
+//        moods.Add("happy", happy);
+//        moods.Add("bored", bored);
+//    }
 
     public string currentMood;
 
@@ -99,18 +118,19 @@ public class Creature : MonoBehaviour
     private float CalculateMoodScore(string mood)
     {
 
-        float joyCoefficient = moods[mood]["joyCoefficient"];
-        float healthCoefficient = moods[mood]["healthCoefficient"];
-        float hungerCoefficient = moods[mood]["hungerCoefficient"];
-        float playerOnelLoveCoefficient = moods[mood]["playerOnelLoveCoefficient"];
-        float playerTwoLoveCoefficient = moods[mood]["playerTwoLoveCoefficient"];
-        float generalLoveCoefficient = moods[mood]["generalLoveCoefficient"];
-
-
-        float moodScore = (1 - health) * healthCoefficient + (1 - hunger) * hungerCoefficient + (1 - generalLove) * generalLoveCoefficient +
-            (1 - joy) * joyCoefficient + (1 - playerOneLove) * playerOnelLoveCoefficient + (1 - playrTwoLove) * playerTwoLoveCoefficient;
-
-        return moodScore;
+//        float joyCoefficient = moods[mood]["joyCoefficient"];
+//        float healthCoefficient = moods[mood]["healthCoefficient"];
+//        float hungerCoefficient = moods[mood]["hungerCoefficient"];
+//        float playerOnelLoveCoefficient = moods[mood]["playerOnelLoveCoefficient"];
+//        float playerTwoLoveCoefficient = moods[mood]["playerTwoLoveCoefficient"];
+//        float generalLoveCoefficient = moods[mood]["generalLoveCoefficient"];
+//
+//
+//        float moodScore = (1 - health) * healthCoefficient + (1 - hunger) * hungerCoefficient + (1 - generalLove) * generalLoveCoefficient +
+//            (1 - joy) * joyCoefficient + (1 - playerOneLove) * playerOnelLoveCoefficient + (1 - playrTwoLove) * playerTwoLoveCoefficient;
+//
+//        return moodScore;
+		return 0f;
     }
 
     /// <summary>
@@ -118,38 +138,38 @@ public class Creature : MonoBehaviour
     /// </summary>
     void CalculateAndUpdateMood()
     {
-        // TODO maybe need a different init?
-    //    string nextMood = "bored";
-
-    //    foreach (var mood in moods)
-    //    {
-    //        mood.Value["score"] = CalculateMoodScore(mood.Key);
-    //        if (mood.Value["score"] > moods[nextMood]["score"])
-    //        {
-    //            nextMood = mood.Key;
-    //        }
-    //    }
-
-    //    currentMood = nextMood;
+//        // TODO maybe need a different init?
+//        string nextMood = "bored";
+//
+//        foreach (var mood in moods)
+//        {
+//            mood.Value["score"] = CalculateMoodScore(mood.Key);
+//            if (mood.Value["score"] > moods[nextMood]["score"])
+//            {
+//                nextMood = mood.Key;
+//            }
+//        }
+//
+//        currentMood = nextMood;
     }
 
-    void UpdateMeters()
+	/// <summary>
+	/// Decreases the meters of the creatures according to the current mood.
+	/// </summary>
+    void DecreaseMeters()
     {
-        float time = Time.time;
-        float joyInterval = moods[currentMood]["joyInterval"];
-
-        if ((time - joyUpdate) >= joyInterval)
-        {
-            joy -= moods[currentMood]["joyDecrease"];
-        }
-        // TODO update the rest of the meters (update meters should take place as the example in FixedUpdate function)
+		// TODO change the xUpdate parameters with the enum coefficients.
+		joy += joyUpdate * Time.fixedDeltaTime;
+		health += healthUpdate * Time.fixedDeltaTime;
+		hunger += hungerUpdate * Time.fixedDeltaTime;
+		generalLove += generalLoveUpdate * Time.fixedDeltaTime;
     }
 
     // Use this for initialization
     void Start()
     {
         float time = Time.time;
-        InitMoodDictionaries();
+//        InitMoodDictionaries();
 
         // initialize the update times of the meters at initialization time
         hungerUpdate = time;
@@ -175,10 +195,13 @@ public class Creature : MonoBehaviour
     void FixedUpdate()
     {
         // TODO update meter example, don't forget to remove!
-        float meter = 0;
-        float change = -0.002f; // in seconds * -1
+//        float meter = 0;
+//        float change = -0.002f; // in seconds * -1
+//
+//        meter += change * Time.fixedDeltaTime;
 
-        meter += change * Time.fixedDeltaTime;
+
+		DecreaseMeters ();
     }
 
 
@@ -284,6 +307,11 @@ public class Creature : MonoBehaviour
         /// </summary>
         public Parameters parameter;
 
+		/// <summary>
+		/// The meter that this coefficient will effect.
+		/// </summary>
+		public Meters meter;
+
         /// <summary>
         /// The value of the component.
         /// </summary>
@@ -309,11 +337,23 @@ public class Creature : MonoBehaviour
         /// <summary>
         /// Evaluates the formula.
         /// </summary>
-        /// <returns>The formula.</returns>
+        /// <returns>The result of the formula.</returns>
         public float EvaluateFormula()
         {
             // TODO sum all of the formula's components and return result as float.
-            return 0f;
+			float result = 0;
+			foreach (var component in components) {
+				result += component.value;
+			}
+			return result;
         }
     }
+		
+	Formua utilityHappy = new Formua ();
+
+	FormulaComponent utilityHappyJoyComponent = new FormulaComponent { parameter = Parameters.cHappyJoy, value = -0.02 };
+	FormulaComponent utilityHappyHealthComponent = new FormulaComponent { parameter = Parameters.cHappyHealth, value = -0.02 };
+	FormulaComponent utilityHappyHungerComponent = new FormulaComponent { parameter = Parameters.cHappyHunger, value = -0.02 };
+	FormulaComponent utilityHappyGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cHappyGeneralLove, value = -0.02 };
 }
+
