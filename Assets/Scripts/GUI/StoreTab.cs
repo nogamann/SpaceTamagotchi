@@ -5,14 +5,12 @@ using System.Collections;
 public class StoreTab : MonoBehaviour
 {
     public Animator storeTabsAnimator;
-    int LastStoreTabIndex;// = 2;
-    //Animation closeStore;
-    //Animation OpenStore;
+    int LastStoreTabIndex;
     public RectTransform panelRectTransform;
     void Start()
     {
         LastStoreTabIndex = this.transform.parent.childCount;
-        Debug.Log("child count: " + LastStoreTabIndex);
+        //Debug.Log("child count: " + LastStoreTabIndex);
     }
 
     public void OnClick()
@@ -20,7 +18,7 @@ public class StoreTab : MonoBehaviour
         //if the store is open, bring this tab forward
         if (storeTabsAnimator.GetCurrentAnimatorStateInfo(0).IsName("StoreIsOpen"))
         {
-            Debug.Log("storeOpen");
+            //Debug.Log("storeOpen");
             int parentIndex = this.transform.parent.GetSiblingIndex();
             
             if (parentIndex != LastStoreTabIndex)
@@ -31,7 +29,7 @@ public class StoreTab : MonoBehaviour
             else
             {
                 storeTabsAnimator.SetTrigger("playStoreAnim");
-                Debug.Log("closing store");
+                //Debug.Log("closing store");
             }
         }
         //opens the store when it's closed
@@ -39,24 +37,7 @@ public class StoreTab : MonoBehaviour
         {
             panelRectTransform.SetAsLastSibling();
             storeTabsAnimator.SetTrigger("playStoreAnim");
-            Debug.Log("opening store");
-        }
-
-        //    if (parentIndex == LastStoreTabIndex)
-        //{
-        //    if (storeTabsAnimator.GetCurrentAnimatorStateInfo(0).IsName("StoreISOpen"))
-        //    {
-        //        int closeStoreHash = Animator.StringToHash("CloseStore");
-        //        storeTabsAnimator.Play(closeStoreHash);
-        //    }
-        //    else
-        //    {
-        //        int openStoreHash = Animator.StringToHash("OpenStore");
-        //        storeTabsAnimator.Play(openStoreHash);
-        //    }
-            
-        
-        
-        
+            //Debug.Log("opening store");
+        }        
     }
 }
