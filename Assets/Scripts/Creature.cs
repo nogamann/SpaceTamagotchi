@@ -3,80 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-///// <summary>
-///// This class represents the creature in the game. All of it's mood and behaviors declered and determined here.
-///// </summary>
-//public class Creature : MonoBehaviour
-//{
-//	// meters
-//	public float joy = 0.5f;
-//	public float health = 0.5f;
-//    public float hunger = 0.5f;
-//    public float playerOneLove = 0.5f;
-//    public float playrTwoLove = 0.5f;
-//    public float generalLove = 0.5f;
-//
-//    // meters update time
-//    public float hungerDecrease;
-//    public float healthDecrease;
-//    public float joyDecrease;
-//    public float playerOneLoveDecrease;
-//    public float playrTwoLoveDecrease;
-//    public float generalLoveDecrease;
-//
-//
-//	/// <summary>
-//	/// Decreases the meters of the creatures according to the current mood.
-//	/// </summary>
-//    void DecreaseMeters()
-//    {
-//		joy += joyDecrease * Time.fixedDeltaTime;
-//		health += healthDecrease * Time.fixedDeltaTime;
-//		hunger += hungerDecrease * Time.fixedDeltaTime;
-//		generalLove += generalLoveDecrease * Time.fixedDeltaTime;
-//		playerOneLove += playerOneLoveDecrease * Time.fixedDeltaTime;
-//		playrTwoLove += playrTwoLoveDecrease * Time.fixedDeltaTime;
-//    }
-//
-//	void FixedUpdate()
-//	{
-//		DecreaseMeters ();
-//	}
-//
-//
-//
-//	/// <summary>
-//	/// This class represents a formula. Formulas are used to caculate
-//	/// the influences of actions on the creature's meters.
-//	/// </summary>
-//	[Serializable]
-//	public class Formula
-//	{
-//		// the creature object
-//		private Creature creature;
-//
-//		// coefficients of the meters in the formula
-//		public float cJoy;
-//		public float cHealth;
-//		public float cHunger;
-//		public float cGeneralLove;
-//		public float cPlayerOneLove;
-//		public float cPlayerTwoLove;
-//
-//		/// <summary>
-//		/// Evaluates the formula.
-//		/// </summary>
-//		/// <returns>The formula's result.</returns>
-//		public float evaluateFormula()
-//		{
-//			float result = cJoy * creature.joy + cHealth * creature.health + cHunger
-//				* creature.hunger + cGeneralLove + creature.generalLove + cPlayerOneLove
-//				* creature.playerOneLove + cPlayerTwoLove * creature.playrTwoLove;
-//			return result;
-//		}
-//	}
-//}
-
 public class Creature : MonoBehaviour
 {
 	/// <summary>
@@ -100,6 +26,8 @@ public class Creature : MonoBehaviour
 		cHappyHealth,
 		cHappyHunger,
 		cHappyGeneralLove,
+		cHappyPlayerOneLove,
+		cHappyPlayerTwoLove,
 		happy,
 		sad
     }
@@ -125,10 +53,74 @@ public class Creature : MonoBehaviour
 	public Creature creature;
 
 	public Formula[] _formulas;
-	Dictionary<Parameters, Formula> formulas;
-	Dictionary<Parameters, float> metersDictionary;
+	Dictionary<Parameters, Formula> formulas = new Dictionary<Parameters, Formula>();
+	Dictionary<Parameters, float> metersDictionary = new Dictionary<Parameters, float>();
+	Dictionary<Parameters, float> coefficientsDictionary = new Dictionary<Parameters, float> ();
 
 	public Parameters currentMood;
+
+	void Awake ()
+	{
+		creature = GetComponent<Creature> ();
+
+		metersDictionary = new Dictionary<Parameters, float>() {{Parameters.joy, joy}, {Parameters.health, health}, {Parameters.hunger, hunger}, {Parameters.generalLove, generalLove}};
+
+		coefficientsDictionary = new Dictionary<Parameters, float> () { 
+			{Parameters.cHappyJoy, 0.2f},
+			{Parameters.cHappyHealth, 0.2f},
+			{Parameters.cHappyHunger, 0.2f},
+			{Parameters.cHappyGeneralLove, 0.2f},
+			{Parameters.cHappyPlayerOneLove, 0.2f},
+			{Parameters.cHappyPlayerTwoLove, 0.2f}};
+		
+		_formulas = new Formula[20];
+		FormulaComponent utilityHappyJoyComponent = new FormulaComponent { parameter = Parameters.cHappyJoy, value = -0.02f };
+		FormulaComponent utilityHappyHealthComponent = new FormulaComponent { parameter = Parameters.cHappyHealth, value = -0.02f };
+		FormulaComponent utilityHappyHungerComponent = new FormulaComponent { parameter = Parameters.cHappyHunger, value = -0.02f };
+		FormulaComponent utilityHappyGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cHappyGeneralLove, value = -0.02f };
+
+		FormulaComponent[] componentList = new FormulaComponent[4];
+		componentList[0] = utilityHappyJoyComponent;
+		componentList[1] = utilityHappyHealthComponent;
+		componentList[2] = utilityHappyHungerComponent;
+		componentList[3] = utilityHappyGeneralLoveComponent;
+
+		Formula utilityHappy = new Formula {creature = this.creature, parameter = Parameters.happy, components = componentList};
+
+		_formulas [0] = utilityHappy;
+
+		formulas [Parameters.happy] = utilityHappy;
+	}
+
+	// Use this for initialization
+	void Start()
+	{
+		float time = Time.time;
+
+		// the first mood of the creature at birth is Happy
+		currentMood = Parameters.happy;
+	}
+
+	// Update is called once per frame
+	void Update()
+	{
+		//check if the creature is dead
+		CalculateMoodScore(Parameters.happy);
+		// update mood
+		CalculateAndUpdateMood();
+	}
+
+	void FixedUpdate()
+	{
+		// TODO update meter example, don't forget to remove!
+		//        float meter = 0;
+		//        float change = -0.002f; // in seconds * -1
+		//
+		//        meter += change * Time.fixedDeltaTime;
+
+
+		DecreaseMeters ();
+	}
 
     /// <summary>
     /// eat, play or take medicine
@@ -155,7 +147,7 @@ public class Creature : MonoBehaviour
     /// <param name="mood">string. The mood we want to calculate it's score.</param>
 	private float CalculateMoodScore(Parameters mood)
     {
-		float result = formulas [mood].Eval (metersDictionary);
+		float result = formulas [mood].Eval (coefficientsDictionary);
 		Debug.Log ("Calculating mood " + mood + " score\n Score is: " + result);
 		return result;
     }
@@ -203,64 +195,6 @@ public class Creature : MonoBehaviour
 		if (formulas.ContainsKey(parameter)) return formulas[parameter].Eval(values);
 		throw new Exception("No parameter " + parameter + " given and no formula to calculate it");
 	}
-
-	void Awake ()
-	{
-		metersDictionary = new Dictionary<Parameters, float>() {{Parameters.joy, joy}, {Parameters.health, health}, {Parameters.hunger, hunger}, {Parameters.generalLove, generalLove}};
-
-		_formulas = new Formula[20];
-		FormulaComponent utilityHappyJoyComponent = new FormulaComponent { parameter = Parameters.cHappyJoy, value = -0.02f };
-		FormulaComponent utilityHappyHealthComponent = new FormulaComponent { parameter = Parameters.cHappyHealth, value = -0.02f };
-		FormulaComponent utilityHappyHungerComponent = new FormulaComponent { parameter = Parameters.cHappyHunger, value = -0.02f };
-		FormulaComponent utilityHappyGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cHappyGeneralLove, value = -0.02f };
-
-		FormulaComponent[] componentList = new FormulaComponent[4];
-		componentList[0] = utilityHappyJoyComponent;
-		componentList[1] = utilityHappyHealthComponent;
-		componentList[2] = utilityHappyHungerComponent;
-		componentList[3] = utilityHappyGeneralLoveComponent;
-
-		Formula utilityHappy = new Formula {parameter = Parameters.happy, components = componentList};
-
-		_formulas [0] = utilityHappy;
-
-		formulas [Parameters.happy] = utilityHappy;
-	}
-
-    // Use this for initialization
-    void Start()
-    {
-		
-
-		
-        float time = Time.time;
-//        InitMoodDictionaries();
-
-        // the first mood of the creature at birth is Happy
-		currentMood = Parameters.happy;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //check if the creature is dead
-		CalculateMoodScore(Parameters.happy);
-        // update mood
-        CalculateAndUpdateMood();
-    }
-
-    void FixedUpdate()
-    {
-        // TODO update meter example, don't forget to remove!
-//        float meter = 0;
-//        float change = -0.002f; // in seconds * -1
-//
-//        meter += change * Time.fixedDeltaTime;
-
-
-		DecreaseMeters ();
-    }
-
 
     // getters and setters
 
@@ -396,8 +330,7 @@ public class Formula : MonoBehaviour
 
 	public void Awake ()
 	{
-		creature = GetComponent<Creature> ();
-//		creature = GameObject.FindObjectOfType<Creature> ();
+		
 	}
 
 	/// <summary>
@@ -421,12 +354,83 @@ public class Formula : MonoBehaviour
 	public float Eval(Dictionary<Creature.Parameters, float> values) {
 		float result = 0f;
 		foreach (var formulaComp in components) {
-
-			//				var value = GameObject.FindObjectsOfType (Creature).GetValue (formulaComp.parameter, values);
 			var value = creature.GetValue (formulaComp.parameter, values);
-			//				float value = GetComponent<Creature>().GetValue(formulaComp.parameter, values);
 			result += value * formulaComp.value;
 		}
 		return result;
 	}
 }
+
+///// <summary>
+///// This class represents the creature in the game. All of it's mood and behaviors declered and determined here.
+///// </summary>
+//public class Creature : MonoBehaviour
+//{
+//	// meters
+//	public float joy = 0.5f;
+//	public float health = 0.5f;
+//    public float hunger = 0.5f;
+//    public float playerOneLove = 0.5f;
+//    public float playrTwoLove = 0.5f;
+//    public float generalLove = 0.5f;
+//
+//    // meters update time
+//    public float hungerDecrease;
+//    public float healthDecrease;
+//    public float joyDecrease;
+//    public float playerOneLoveDecrease;
+//    public float playrTwoLoveDecrease;
+//    public float generalLoveDecrease;
+//
+//
+//	/// <summary>
+//	/// Decreases the meters of the creatures according to the current mood.
+//	/// </summary>
+//    void DecreaseMeters()
+//    {
+//		joy += joyDecrease * Time.fixedDeltaTime;
+//		health += healthDecrease * Time.fixedDeltaTime;
+//		hunger += hungerDecrease * Time.fixedDeltaTime;
+//		generalLove += generalLoveDecrease * Time.fixedDeltaTime;
+//		playerOneLove += playerOneLoveDecrease * Time.fixedDeltaTime;
+//		playrTwoLove += playrTwoLoveDecrease * Time.fixedDeltaTime;
+//    }
+//
+//	void FixedUpdate()
+//	{
+//		DecreaseMeters ();
+//	}
+//
+//
+//
+//	/// <summary>
+//	/// This class represents a formula. Formulas are used to caculate
+//	/// the influences of actions on the creature's meters.
+//	/// </summary>
+//	[Serializable]
+//	public class Formula
+//	{
+//		// the creature object
+//		private Creature creature;
+//
+//		// coefficients of the meters in the formula
+//		public float cJoy;
+//		public float cHealth;
+//		public float cHunger;
+//		public float cGeneralLove;
+//		public float cPlayerOneLove;
+//		public float cPlayerTwoLove;
+//
+//		/// <summary>
+//		/// Evaluates the formula.
+//		/// </summary>
+//		/// <returns>The formula's result.</returns>
+//		public float evaluateFormula()
+//		{
+//			float result = cJoy * creature.joy + cHealth * creature.health + cHunger
+//				* creature.hunger + cGeneralLove + creature.generalLove + cPlayerOneLove
+//				* creature.playerOneLove + cPlayerTwoLove * creature.playrTwoLove;
+//			return result;
+//		}
+//	}
+//}
