@@ -61,7 +61,7 @@ public class Creature : MonoBehaviour
 
 	public Formula[] _formulas;
 
-	Dictionary<Parameters, Formula> formulas;
+	Dictionary<Parameters, Formula> moodsDictionary;
 	Dictionary<Parameters, Formula> actionsDictionary;
 
 	Dictionary<Parameters, float> metersDictionary;
@@ -125,16 +125,14 @@ public class Creature : MonoBehaviour
 		Formula utilityEat = new Formula { creature = this.creature, parameter = Parameters.eat, components = utilityEatComponentList };
 		_formulas [1] = utilityEat;
 
-		formulas = new Dictionary<Parameters, Formula> ();
-		formulas [Parameters.happy] = utilityHappy;
-		formulas [Parameters.eat] = utilityEat;
+		moodsDictionary = new Dictionary<Parameters, Formula> ();
+		moodsDictionary [Parameters.happy] = utilityHappy;
+		moodsDictionary [Parameters.eat] = utilityEat;
 	}
 
 	// Use this for initialization
 	void Start()
 	{
-		float time = Time.time;
-
 		// the first mood of the creature at birth is Happy
 		currentMood = Parameters.happy;
 	}
@@ -185,7 +183,7 @@ public class Creature : MonoBehaviour
     /// <param name="mood">string. The mood we want to calculate it's score.</param>
 	private float CalculateMoodScore(Parameters mood)
     {
-		float result = formulas [mood].Eval (coefficientsDictionary);
+		float result = moodsDictionary [mood].Eval (coefficientsDictionary);
 		Debug.Log ("Calculating mood " + mood + " score\n Score is: " + result);
 		return result;
     }
@@ -195,19 +193,21 @@ public class Creature : MonoBehaviour
     /// </summary>
     void CalculateAndUpdateMood()
     {
-//        // TODO maybe need a different init?
-//        string nextMood = "bored";
-//
-//        foreach (var mood in moods)
-//        {
-//            mood.Value["score"] = CalculateMoodScore(mood.Key);
-//            if (mood.Value["score"] > moods[nextMood]["score"])
-//            {
-//                nextMood = mood.Key;
-//            }
-//        }
-//
-//        currentMood = nextMood;
+		// init the next mood and it's score with the current mood
+		var nextMood = currentMood;
+		var nextMoodScore = CalculateMoodScore (currentMood);
+
+		// find the mood with higest score
+		foreach (var mood in moodsDictionary) {
+			var moodScore = CalculateMoodScore (mood);
+			if (moodScore > nextMoodScore) {
+				nextMood = mood;
+				nextMoodScore = moodScore;
+			}
+		}
+
+		// change the current mood to the mood with the highest score
+		currentMood = nextMood;
     }
 
 	/// <summary>
@@ -230,7 +230,7 @@ public class Creature : MonoBehaviour
 	/// <param name="values">Values.</param>
 	public float GetValue(Parameters parameter, Dictionary<Parameters, float> values) {
 		if (values.ContainsKey(parameter)) return values[parameter];
-		if (formulas.ContainsKey(parameter)) return formulas[parameter].Eval(values);
+		if (moodsDictionary.ContainsKey(parameter)) return moodsDictionary[parameter].Eval(values);
 		throw new Exception("No parameter " + parameter + " given and no formula to calculate it");
 	}
 
@@ -252,15 +252,12 @@ public class Creature : MonoBehaviour
 			return;
 		}
 
-		// decide what to do with the object according to it's type
-		if (thing.itemType == ThingObject.ItemType.Food) {
-			DoAction (thing);
+		// perform the relevant action with the thing
+		DoAction (thing);
+
+		// destroy the object if it's consumable (food or medicine)
+		if (thing.itemType != ThingObject.ItemType.Game) {
 			Destroy (thing);
-		} else if (thing.itemType == ThingObject.ItemType.Medicine) {
-			DoAction (thing);
-			Destroy (thing);
-		} else if (thing.itemType == ThingObject.ItemType.Game) {
-			DoAction (thing);
 		}
 	}
 
