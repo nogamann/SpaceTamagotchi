@@ -29,7 +29,14 @@ public class Creature : MonoBehaviour
 		cHappyPlayerOneLove,
 		cHappyPlayerTwoLove,
 		happy,
-		sad
+		sad,
+		eat,
+		cEatJoy,
+		cEatHealth,
+		cEatHunger,
+		cEatGeneralLove,
+		cEatPlayerOneLove,
+		cEatPlayerTwoLove
     }
 
     // meters
@@ -53,9 +60,12 @@ public class Creature : MonoBehaviour
 	public Creature creature;
 
 	public Formula[] _formulas;
-	Dictionary<Parameters, Formula> formulas = new Dictionary<Parameters, Formula>();
-	Dictionary<Parameters, float> metersDictionary = new Dictionary<Parameters, float>();
-	Dictionary<Parameters, float> coefficientsDictionary = new Dictionary<Parameters, float> ();
+
+	Dictionary<Parameters, Formula> formulas;
+	Dictionary<Parameters, Formula> actionsDictionary;
+
+	Dictionary<Parameters, float> metersDictionary;
+	Dictionary<Parameters, float> coefficientsDictionary;
 
 	public Parameters currentMood;
 
@@ -63,7 +73,12 @@ public class Creature : MonoBehaviour
 	{
 		creature = GetComponent<Creature> ();
 
-		metersDictionary = new Dictionary<Parameters, float>() {{Parameters.joy, joy}, {Parameters.health, health}, {Parameters.hunger, hunger}, {Parameters.generalLove, generalLove}};
+		metersDictionary = new Dictionary<Parameters, float>() {
+			{Parameters.joy, joy}, 
+			{Parameters.health, health}, 
+			{Parameters.hunger, hunger}, 
+			{Parameters.generalLove, generalLove}
+		};
 
 		coefficientsDictionary = new Dictionary<Parameters, float> () { 
 			{Parameters.cHappyJoy, 0.2f},
@@ -71,25 +86,48 @@ public class Creature : MonoBehaviour
 			{Parameters.cHappyHunger, 0.2f},
 			{Parameters.cHappyGeneralLove, 0.2f},
 			{Parameters.cHappyPlayerOneLove, 0.2f},
-			{Parameters.cHappyPlayerTwoLove, 0.2f}};
+			{Parameters.cHappyPlayerTwoLove, 0.2f}
+		};
 		
 		_formulas = new Formula[20];
+
+		// happy mood utility
 		FormulaComponent utilityHappyJoyComponent = new FormulaComponent { parameter = Parameters.cHappyJoy, value = -0.02f };
 		FormulaComponent utilityHappyHealthComponent = new FormulaComponent { parameter = Parameters.cHappyHealth, value = -0.02f };
 		FormulaComponent utilityHappyHungerComponent = new FormulaComponent { parameter = Parameters.cHappyHunger, value = -0.02f };
 		FormulaComponent utilityHappyGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cHappyGeneralLove, value = -0.02f };
 
-		FormulaComponent[] componentList = new FormulaComponent[4];
-		componentList[0] = utilityHappyJoyComponent;
-		componentList[1] = utilityHappyHealthComponent;
-		componentList[2] = utilityHappyHungerComponent;
-		componentList[3] = utilityHappyGeneralLoveComponent;
+		FormulaComponent[] utilityHappyComponentList = new FormulaComponent[4];
 
-		Formula utilityHappy = new Formula {creature = this.creature, parameter = Parameters.happy, components = componentList};
-
+		utilityHappyComponentList[0] = utilityHappyJoyComponent;
+		utilityHappyComponentList[1] = utilityHappyHealthComponent;
+		utilityHappyComponentList[2] = utilityHappyHungerComponent;
+		utilityHappyComponentList[3] = utilityHappyGeneralLoveComponent;
+		Formula utilityHappy = new Formula {creature = this.creature, parameter = Parameters.happy, components = utilityHappyComponentList};
 		_formulas [0] = utilityHappy;
 
+		// eat action utility
+		FormulaComponent utilityEatJoyComponent = new FormulaComponent { parameter = Parameters.cEatJoy, value = 0.03f };
+		FormulaComponent utilityEatHealthComponent = new FormulaComponent { parameter = Parameters.cEatHealth, value = 0.02f };
+		FormulaComponent utilityEatHungerComponent = new FormulaComponent { parameter = Parameters.cEatHunger, value = 0.7f };
+		FormulaComponent utilityEatGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cEatGeneralLove, value = 0.0f };
+		FormulaComponent utilityEatPlayerOneLoveComponent = new FormulaComponent { parameter = Parameters.cEatPlayerOneLove, value = 0.2f };
+		FormulaComponent utilityEatPlayerTwoLoveComponent = new FormulaComponent { parameter = Parameters.cEatPlayerTwoLove, value = 0.05f };
+
+		FormulaComponent[] utilityEatComponentList = new FormulaComponent[6];
+
+		utilityEatComponentList [0] = utilityEatJoyComponent;
+		utilityEatComponentList [1] = utilityEatHealthComponent;
+		utilityEatComponentList [2] = utilityEatHungerComponent;
+		utilityEatComponentList [3] = utilityEatGeneralLoveComponent;
+		utilityEatComponentList [4] = utilityEatPlayerOneLoveComponent;
+		utilityEatComponentList [5] = utilityEatPlayerTwoLoveComponent;
+		Formula utilityEat = new Formula { creature = this.creature, parameter = Parameters.eat, components = utilityEatComponentList };
+		_formulas [1] = utilityEat;
+
+		formulas = new Dictionary<Parameters, Formula> ();
 		formulas [Parameters.happy] = utilityHappy;
+		formulas [Parameters.eat] = utilityEat;
 	}
 
 	// Use this for initialization
@@ -196,7 +234,38 @@ public class Creature : MonoBehaviour
 		throw new Exception("No parameter " + parameter + " given and no formula to calculate it");
 	}
 
-    // getters and setters
+	/// <summary>
+	/// Called when a thing is used on the creature.
+	/// This function will destroy the thing if it's consumable, or just use it if it's a game.
+	/// </summary>
+	/// <param name="collision">Collision.</param>
+	void OnCollisionEnter(Collision collision)
+	{
+		// TODO change name and maybe the signature (if the object should not be effected by the collision, but by being over the creature).
+
+		// get the object that touched the creature
+		ThingObject thing = collision.collider.GetComponent<ThingObject>();
+
+		// 
+		if (thing == null) {
+			Debug.LogError ("Collided with something that is not a ThingObject!");
+			return;
+		}
+
+		// decide what to do with the object according to it's type
+		if (thing.itemType == ThingObject.ItemType.Food) {
+			DoAction (thing);
+			Destroy (thing);
+		} else if (thing.itemType == ThingObject.ItemType.Medicine) {
+			DoAction (thing);
+			Destroy (thing);
+		} else if (thing.itemType == ThingObject.ItemType.Game) {
+			DoAction (thing);
+		}
+	}
+
+    
+	// getters and setters
 
 	public Parameters CurrentMood
     {
