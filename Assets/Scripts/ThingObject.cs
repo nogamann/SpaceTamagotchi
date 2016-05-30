@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ThingObject : MonoBehaviour {
+public class ThingObject : UnityEngine.Object{
 
     public enum ItemType
     {
@@ -15,8 +15,11 @@ public class ThingObject : MonoBehaviour {
 	public float love;
 	public float hunger;
 	public float joy;
-    public ItemType itemType;
 
+	// the level of atractiveness of the item to the creature
+	public float attractiveness;
+
+    public ItemType itemType;
 
 
 	public float Joy {
@@ -54,18 +57,4 @@ public class ThingObject : MonoBehaviour {
 			health = value;
 		}
 	}
-
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-
-
 }

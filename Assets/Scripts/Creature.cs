@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+///// <summary>
+///// This class represents the creature in the game. All of it's mood and behaviors declered and determined here.
+///// </summary>
 public class Creature : MonoBehaviour
 {
 	/// <summary>
@@ -67,11 +70,33 @@ public class Creature : MonoBehaviour
 	Dictionary<Parameters, float> metersDictionary;
 	Dictionary<Parameters, float> coefficientsDictionary;
 
+	// arrays of possible actions of each type of item
+	Parameters[] _foodActions;
+	Parameters[] _medicineActions;
+	Parameters[] _gameActions;
+
+	// a dictionary to connect between the action arrays to the appropriate item type
+	Dictionary<ThingObject.ItemType, Parameters[]> itemPossibleActions;
+
 	public Parameters currentMood;
+
+	// TODO remove these after debug!
+	ThingObject food;
+
+
 
 	void Awake ()
 	{
 		creature = GetComponent<Creature> ();
+
+		// init dictionaries
+		moodsDictionary = new Dictionary<Parameters, Formula> ();
+		actionsDictionary = new Dictionary<Parameters, Formula> ();
+		itemPossibleActions = new Dictionary<ThingObject.ItemType, Parameters[]> () {
+			{ThingObject.ItemType.Food, _foodActions},
+			{ThingObject.ItemType.Medicine, _medicineActions},
+			{ThingObject.ItemType.Game, _gameActions}
+		};
 
 		metersDictionary = new Dictionary<Parameters, float>() {
 			{Parameters.joy, joy}, 
@@ -88,14 +113,18 @@ public class Creature : MonoBehaviour
 			{Parameters.cHappyPlayerOneLove, 0.2f},
 			{Parameters.cHappyPlayerTwoLove, 0.2f}
 		};
-		
+
+		// init arrays
 		_formulas = new Formula[20];
+		_foodActions = new Parameters[1];
+		_medicineActions = new Parameters[1];
+		_gameActions = new Parameters[1];
 
 		// happy mood utility
-		FormulaComponent utilityHappyJoyComponent = new FormulaComponent { parameter = Parameters.cHappyJoy, value = -0.02f };
-		FormulaComponent utilityHappyHealthComponent = new FormulaComponent { parameter = Parameters.cHappyHealth, value = -0.02f };
-		FormulaComponent utilityHappyHungerComponent = new FormulaComponent { parameter = Parameters.cHappyHunger, value = -0.02f };
-		FormulaComponent utilityHappyGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cHappyGeneralLove, value = -0.02f };
+		FormulaComponent utilityHappyJoyComponent = new FormulaComponent { parameter = Parameters.cHappyJoy, value = 0.6f };
+		FormulaComponent utilityHappyHealthComponent = new FormulaComponent { parameter = Parameters.cHappyHealth, value = 0.1f };
+		FormulaComponent utilityHappyHungerComponent = new FormulaComponent { parameter = Parameters.cHappyHunger, value = 0.2f };
+		FormulaComponent utilityHappyGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cHappyGeneralLove, value = 0.1f };
 
 		FormulaComponent[] utilityHappyComponentList = new FormulaComponent[4];
 
@@ -123,11 +152,16 @@ public class Creature : MonoBehaviour
 		utilityEatComponentList [4] = utilityEatPlayerOneLoveComponent;
 		utilityEatComponentList [5] = utilityEatPlayerTwoLoveComponent;
 		Formula utilityEat = new Formula { creature = this.creature, parameter = Parameters.eat, components = utilityEatComponentList };
-		_formulas [1] = utilityEat;
 
-		moodsDictionary = new Dictionary<Parameters, Formula> ();
+		_formulas [1] = utilityEat;
+		_foodActions[0] = Parameters.eat;
+
 		moodsDictionary [Parameters.happy] = utilityHappy;
-		moodsDictionary [Parameters.eat] = utilityEat;
+
+		actionsDictionary [Parameters.eat] = utilityEat;
+
+		// TODO remove the next objects after debug!
+		food = new ThingObject () { itemType = ThingObject.ItemType.Food };
 	}
 
 	// Use this for initialization
@@ -141,40 +175,112 @@ public class Creature : MonoBehaviour
 	void Update()
 	{
 		//check if the creature is dead
-		CalculateMoodScore(Parameters.happy);
+		// TODO decide what are the levels of the meters that determine death
+
+		// decrease meters
+		// TODO decrease meters by the current mood
+		DecreaseMeters();
+
 		// update mood
 		CalculateAndUpdateMood();
+
+		// TODO remove after debug!
+		if (Input.GetKeyDown (KeyCode.C)) {
+			Debug.Log ("'c' is pressed!");
+			ChooseAction (food);
+		}
+
 	}
 
 	void FixedUpdate()
 	{
-		// TODO update meter example, don't forget to remove!
-		//        float meter = 0;
-		//        float change = -0.002f; // in seconds * -1
-		//
-		//        meter += change * Time.fixedDeltaTime;
-
-
+		// update meters as time passes
 		DecreaseMeters ();
+	}
+
+	/// <summary>
+	/// Calculates the action score.
+	/// </summary>
+	/// <returns>The action score.</returns>
+	/// <param name="action">Action.</param>
+	float CalculateActionScore(Parameters action)
+	{
+		float result = actionsDictionary [action].Eval (coefficientsDictionary);
+		Debug.Log ("Calculating action " + action + " score\n Score is: " + result);
+		return result;
 	}
 
     /// <summary>
     /// eat, play or take medicine
     /// </summary>
     /// <param name="thing">food, toy or medicine.</param>
-    void DoAction(ThingObject thing)
+    void ChooseAction(ThingObject thing)
     {
-        //TODO: play relevant animation
+		// TODO create an idle action to prevent null pointer exception in the rare case no action was chosen
+		Parameters chosenAction = Parameters.eat;
+		float actionScore = 0.0f;
 
-        health += (thing.Health * Mathf.Pow(health, 3));
-        hunger += (thing.Hunger * Mathf.Pow(hunger, 3));
-        joy += (thing.Joy * Mathf.Pow(joy, 3));
+		// TODO remove
+		Debug.LogError ("itemType: " + thing.itemType);
 
-        // TODO: change the love of the current player only
-        playerOneLove += (thing.Love * Mathf.Pow(playerOneLove, 3));
+		// TODO remove
+		Debug.LogError ("itemPossibleActions[thing.itemType]: " + itemPossibleActions[thing.itemType]);
 
-        // TODO add impact of the love to the performing player (should be implemented as a formula in the enum)
+		// TODO remove
+		Debug.LogError ("itemPossibleActions: " + itemPossibleActions);
+
+		// check the type of the item
+		Parameters[] possibleActions = itemPossibleActions[thing.itemType];
+
+		// TODO remove
+		Debug.LogError ("possibleActions: " + possibleActions);
+
+		// calculate the possible actions' scores according to it's type
+		foreach (var action in possibleActions) {
+
+			// TODO remove
+			Debug.LogError ("action: " + action);
+
+			float currentActionScore = CalculateActionScore(action);
+
+			if (currentActionScore > actionScore) {
+				actionScore = currentActionScore;
+				chosenAction = action;
+			}
+		}
+
+		Debug.Log ("Chosen action is: " + chosenAction);
+
+		// perform the chosen action
+		DoAction(thing, chosenAction);
     }
+
+	/// <summary>
+	/// Dos the action.
+	/// </summary>
+	/// <param name="item">Item.</param>
+	/// <param name="action">Action.</param>
+	void DoAction(ThingObject item, Parameters action)
+	{
+		Debug.Log ("Performing action: " + action + " on " + item);
+
+		// play relevant animation
+		// update the relevant meters according to the effect of the action
+
+
+
+
+		//        //TODO: play relevant animation
+		//
+		//        health += (thing.Health * Mathf.Pow(health, 3));
+		//        hunger += (thing.Hunger * Mathf.Pow(hunger, 3));
+		//        joy += (thing.Joy * Mathf.Pow(joy, 3));
+		//
+		//        // TODO: change the love of the current player only
+		//        playerOneLove += (thing.Love * Mathf.Pow(playerOneLove, 3));
+		//
+		//        // TODO add impact of the love to the performing player (should be implemented as a formula in the enum)
+	}
 
     /// <summary>
     /// Calculates the mood score.
@@ -199,9 +305,9 @@ public class Creature : MonoBehaviour
 
 		// find the mood with higest score
 		foreach (var mood in moodsDictionary) {
-			var moodScore = CalculateMoodScore (mood);
+			var moodScore = CalculateMoodScore (mood.Key);
 			if (moodScore > nextMoodScore) {
-				nextMood = mood;
+				nextMood = mood.Key;
 				nextMoodScore = moodScore;
 			}
 		}
@@ -253,7 +359,7 @@ public class Creature : MonoBehaviour
 		}
 
 		// perform the relevant action with the thing
-		DoAction (thing);
+		ChooseAction (thing);
 
 		// destroy the object if it's consumable (food or medicine)
 		if (thing.itemType != ThingObject.ItemType.Game) {
@@ -347,11 +453,6 @@ public class Creature : MonoBehaviour
             LoveGeneral = value;
         }
     }
-
-    public class moodClass
-    {
-        // TODO needed?
-    }
 }
 
 /// <summary>
@@ -380,7 +481,7 @@ public class FormulaComponent
 /// Represents Formua.
 /// </summary>
 [Serializable]
-public class Formula : MonoBehaviour
+public class Formula
 {
 	public Creature creature;
 
@@ -393,25 +494,6 @@ public class Formula : MonoBehaviour
 	/// The components of the formula.
 	/// </summary>
 	public FormulaComponent[] components;
-
-	public void Awake ()
-	{
-		
-	}
-
-	/// <summary>
-	/// Evaluates the formula.
-	/// </summary>
-	/// <returns>The result of the formula.</returns>
-	public float EvaluateFormula()
-	{
-		// TODO sum all of the formula's components and return result as float.
-		float result = 0;
-		foreach (var component in components) {
-			result += component.value;
-		}
-		return result;
-	}
 
 	/// <summary>
 	/// Eval the specified values.
@@ -426,77 +508,3 @@ public class Formula : MonoBehaviour
 		return result;
 	}
 }
-
-///// <summary>
-///// This class represents the creature in the game. All of it's mood and behaviors declered and determined here.
-///// </summary>
-//public class Creature : MonoBehaviour
-//{
-//	// meters
-//	public float joy = 0.5f;
-//	public float health = 0.5f;
-//    public float hunger = 0.5f;
-//    public float playerOneLove = 0.5f;
-//    public float playrTwoLove = 0.5f;
-//    public float generalLove = 0.5f;
-//
-//    // meters update time
-//    public float hungerDecrease;
-//    public float healthDecrease;
-//    public float joyDecrease;
-//    public float playerOneLoveDecrease;
-//    public float playrTwoLoveDecrease;
-//    public float generalLoveDecrease;
-//
-//
-//	/// <summary>
-//	/// Decreases the meters of the creatures according to the current mood.
-//	/// </summary>
-//    void DecreaseMeters()
-//    {
-//		joy += joyDecrease * Time.fixedDeltaTime;
-//		health += healthDecrease * Time.fixedDeltaTime;
-//		hunger += hungerDecrease * Time.fixedDeltaTime;
-//		generalLove += generalLoveDecrease * Time.fixedDeltaTime;
-//		playerOneLove += playerOneLoveDecrease * Time.fixedDeltaTime;
-//		playrTwoLove += playrTwoLoveDecrease * Time.fixedDeltaTime;
-//    }
-//
-//	void FixedUpdate()
-//	{
-//		DecreaseMeters ();
-//	}
-//
-//
-//
-//	/// <summary>
-//	/// This class represents a formula. Formulas are used to caculate
-//	/// the influences of actions on the creature's meters.
-//	/// </summary>
-//	[Serializable]
-//	public class Formula
-//	{
-//		// the creature object
-//		private Creature creature;
-//
-//		// coefficients of the meters in the formula
-//		public float cJoy;
-//		public float cHealth;
-//		public float cHunger;
-//		public float cGeneralLove;
-//		public float cPlayerOneLove;
-//		public float cPlayerTwoLove;
-//
-//		/// <summary>
-//		/// Evaluates the formula.
-//		/// </summary>
-//		/// <returns>The formula's result.</returns>
-//		public float evaluateFormula()
-//		{
-//			float result = cJoy * creature.joy + cHealth * creature.health + cHunger
-//				* creature.hunger + cGeneralLove + creature.generalLove + cPlayerOneLove
-//				* creature.playerOneLove + cPlayerTwoLove * creature.playrTwoLove;
-//			return result;
-//		}
-//	}
-//}
