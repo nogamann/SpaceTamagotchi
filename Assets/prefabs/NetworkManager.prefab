@@ -54,14 +54,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 144702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1b1ee8214192a14e906a5819a6f89e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 06f568c664134ee45806809dfbee0851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayFabId: 
   friendsPlayFabId: 
   mySharedGroupId: 
   titleID: 3067
-  networkManager: {fileID: 11465326}
+  networkManager: {fileID: 0}
   invited: 0
 --- !u!114 &11465326
 MonoBehaviour:
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 117570, guid: a76b882dcd0bc2c46b9bd5ce66ad1180, type: 2}
+  m_PlayerPrefab: {fileID: 0}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
   m_OfflineScene: 

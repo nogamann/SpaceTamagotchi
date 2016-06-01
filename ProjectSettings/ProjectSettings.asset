@@ -331,6 +331,7 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols:
+    1: CAPTURE_DRAG
     7: CAPTURE_DRAG
   metroPackageName: spcaeTamagoutchi
   metroPackageVersion: 
