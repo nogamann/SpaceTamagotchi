@@ -85,7 +85,7 @@ public class Creature : MonoBehaviour
 
 
 
-	void Awake ()
+	void Awakre ()
 	{
 		creature = GetComponent<Creature> ();
 
@@ -179,7 +179,6 @@ public class Creature : MonoBehaviour
 
 		// decrease meters
 		// TODO decrease meters by the current mood
-		DecreaseMeters();
 
 		// update mood
 		CalculateAndUpdateMood();
@@ -466,11 +465,7 @@ public class FormulaComponent
 	/// </summary>
 	public Creature.Parameters parameter;
 
-	/// <summary>
-	/// The meter that this coefficient will effect.
-	/// </summary>
-	public Creature.Parameters meter;
-
+	// TODO rename 'value' to 'coefficient'
 	/// <summary>
 	/// The value of the component.
 	/// </summary>
