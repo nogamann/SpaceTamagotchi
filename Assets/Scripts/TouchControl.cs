@@ -7,25 +7,28 @@ public class TouchControl : MonoBehaviour
 {
 
     private bool isDragged;
-    Vector2 offset;
+    Vector3 offset;
     Vector2 vec2Position;
     float zAxisPos;
     RaycastHit2D hit;
     Touch draggingTouch;
+    Vector3 touchPosition;
+    public Camera mainCamera;
+    public BoxCollider2D lowerBoundOfMovement;
 
 
-    //TODO cange to in enabled
+    //TODO change to in enabled
     void Awake()
     {
         GameInputCapture.OnTouchDown += this.OnTouchDown;
         GameInputCapture.OnTouchDrag += this.OnTouchDrag;
+        GameInputCapture.OnTouchUp += this.OnTouchUp;
     }
 
 
     void Start()
     {
         isDragged = false;
-        zAxisPos = this.transform.position.z;
     }
 
     void Update()
@@ -95,16 +98,37 @@ public class TouchControl : MonoBehaviour
 
     private void OnTouchDrag(PointerEventData obj)
     {
-        Debug.Log("is dragged");
-        Vector3 newPos = new Vector3(Input.mousePosition.x + offset.x, Input.mousePosition.y + offset.y, zAxisPos);
-        this.transform.position = obj.position + offset;
+        if (isDragged)
+        {
+            Vector3 touchWorldPos = mainCamera.ScreenToWorldPoint(obj.position);
+            //double yAxisLowerBound = mainCamera.ScreenToWorldPoint(lowerBoundOfMovement.bounds.min).y;
+            //Debug.Log("Lower bound: " + yAxisLowerBound);
+            //Debug.Log("touch: " + touchWorldPos);
+
+            //if (touchWorldPos.y > yAxisLowerBound)
+            if (!lowerBoundOfMovement.bounds.Contains(obj.position))
+            {
+                this.transform.position = touchWorldPos + offset;
+            }
+            
+        }
     }
 
     private void OnTouchDown(PointerEventData obj)
     {
-        Debug.Log("touch down");
-        vec2Position = this.transform.position;
-        offset = (vec2Position - obj.position);
+        Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position));
+        if (hit == this.GetComponent<Collider2D>())
+        {
+            offset = (this.transform.position - mainCamera.ScreenToWorldPoint(obj.position));
+            isDragged = true;
+        }
     }
+
+
+    private void OnTouchUp(PointerEventData obj)
+    {
+        isDragged = false;
+    }
+
 }
 
