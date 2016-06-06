@@ -9,8 +9,7 @@ public class StoreTab : MonoBehaviour
     public RectTransform panelRectTransform;
     void Start()
     {
-        LastStoreTabIndex = this.transform.parent.childCount;
-        //Debug.Log("child count: " + LastStoreTabIndex);
+        LastStoreTabIndex = this.transform.parent.transform.parent.childCount - 1;
     }
 
     public void OnClick()
@@ -20,7 +19,7 @@ public class StoreTab : MonoBehaviour
         {
             //Debug.Log("storeOpen");
             int parentIndex = this.transform.parent.GetSiblingIndex();
-            
+
             if (parentIndex != LastStoreTabIndex)
             {
                 panelRectTransform.SetAsLastSibling();
@@ -28,6 +27,7 @@ public class StoreTab : MonoBehaviour
             //if the player clicks on a store tab that is already open, it will close the store
             else
             {
+                Debug.Log(this.name);
                 storeTabsAnimator.SetTrigger("playStoreAnim");
                 //Debug.Log("closing store");
             }
