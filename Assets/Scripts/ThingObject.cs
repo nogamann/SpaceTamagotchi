@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class ThingObject : UnityEngine.Object{
+public class ThingObject : MonoBehaviour
+{
 
     public enum ItemType
     {
@@ -15,6 +17,8 @@ public class ThingObject : UnityEngine.Object{
 	public float love;
 	public float hunger;
 	public float joy;
+
+    public int price;
 
 	// the level of atractiveness of the item to the creature
 	public float attractiveness;

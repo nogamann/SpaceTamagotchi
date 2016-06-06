@@ -11,8 +11,8 @@ GameObject:
   - 212: {fileID: 21242052}
   - 60: {fileID: 6099348}
   - 114: {fileID: 11472844}
-  - 114: {fileID: 11466044}
-  m_Layer: 0
+  - 114: {fileID: 11447036}
+  m_Layer: 8
   m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,8 +26,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 73.06485, y: 76.16958, z: 10.3096485}
-  m_LocalScale: {x: 411.17752, y: 411.17752, z: 8.223551}
+  m_LocalPosition: {x: 60.71034, y: -99, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -51,7 +51,7 @@ PolygonCollider2D:
       - {x: 0.058978718, y: -0.04248217}
       - {x: 0.057226963, y: 0.04897867}
       - {x: 0.033978753, y: 0.06073055}
---- !u!114 &11466044
+--- !u!114 &11447036
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -59,11 +59,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 158432}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fefc685df30825e478c1990b8e3ab567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
+  health: 0
+  love: 0
+  hunger: 0
+  joy: 0
+  price: 10
+  attractiveness: 0
+  itemType: 0
 --- !u!114 &11472844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -75,6 +80,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e4c9cc03cba4b4fb9a5154a9df566b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  lowerBoundOfMovement: {fileID: 0}
 --- !u!212 &21242052
 SpriteRenderer:
   m_ObjectHideFlags: 1
