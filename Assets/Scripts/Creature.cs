@@ -21,25 +21,9 @@ public class Creature : MonoBehaviour
 		generalLove,
 		playerOneLove,
 		playerTwoLove,
-		cDecreaseJoy,
-		cDecreaseHealth,
-		cDecreaseHunger,
-		cDecreaseGeneralLove,
-		cHappyJoy,
-		cHappyHealth,
-		cHappyHunger,
-		cHappyGeneralLove,
-		cHappyPlayerOneLove,
-		cHappyPlayerTwoLove,
 		happy,
 		sad,
-		eat,
-		cEatJoy,
-		cEatHealth,
-		cEatHunger,
-		cEatGeneralLove,
-		cEatPlayerOneLove,
-		cEatPlayerTwoLove
+		eat
     }
 
     // meters
@@ -69,14 +53,6 @@ public class Creature : MonoBehaviour
 
 	Dictionary<Parameters, float> metersDictionary;
 	Dictionary<Parameters, float> coefficientsDictionary;
-
-	// arrays of possible actions of each type of item
-	Parameters[] _foodActions;
-	Parameters[] _medicineActions;
-	Parameters[] _gameActions;
-
-	// a dictionary to connect between the action arrays to the appropriate item type
-	Dictionary<ThingObject.ItemType, Parameters[]> itemPossibleActions;
 
 	public Parameters currentMood;
 
@@ -121,10 +97,10 @@ public class Creature : MonoBehaviour
 		_gameActions = new Parameters[1];
 
 		// happy mood utility
-		FormulaComponent utilityHappyJoyComponent = new FormulaComponent { parameter = Parameters.cHappyJoy, value = 0.6f };
-		FormulaComponent utilityHappyHealthComponent = new FormulaComponent { parameter = Parameters.cHappyHealth, value = 0.1f };
-		FormulaComponent utilityHappyHungerComponent = new FormulaComponent { parameter = Parameters.cHappyHunger, value = 0.2f };
-		FormulaComponent utilityHappyGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cHappyGeneralLove, value = 0.1f };
+		FormulaComponent utilityHappyJoyComponent = new FormulaComponent { parameter = Parameters.cHappyJoy, coefficient = 0.6f };
+		FormulaComponent utilityHappyHealthComponent = new FormulaComponent { parameter = Parameters.cHappyHealth, coefficient = 0.1f };
+		FormulaComponent utilityHappyHungerComponent = new FormulaComponent { parameter = Parameters.cHappyHunger, coefficient = 0.2f };
+		FormulaComponent utilityHappyGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cHappyGeneralLove, coefficient = 0.1f };
 
 		FormulaComponent[] utilityHappyComponentList = new FormulaComponent[4];
 
@@ -136,12 +112,12 @@ public class Creature : MonoBehaviour
 		_formulas [0] = utilityHappy;
 
 		// eat action utility
-		FormulaComponent utilityEatJoyComponent = new FormulaComponent { parameter = Parameters.cEatJoy, value = 0.03f };
-		FormulaComponent utilityEatHealthComponent = new FormulaComponent { parameter = Parameters.cEatHealth, value = 0.02f };
-		FormulaComponent utilityEatHungerComponent = new FormulaComponent { parameter = Parameters.cEatHunger, value = 0.7f };
-		FormulaComponent utilityEatGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cEatGeneralLove, value = 0.0f };
-		FormulaComponent utilityEatPlayerOneLoveComponent = new FormulaComponent { parameter = Parameters.cEatPlayerOneLove, value = 0.2f };
-		FormulaComponent utilityEatPlayerTwoLoveComponent = new FormulaComponent { parameter = Parameters.cEatPlayerTwoLove, value = 0.05f };
+		FormulaComponent utilityEatJoyComponent = new FormulaComponent { parameter = Parameters.cEatJoy, coefficient = 0.03f };
+		FormulaComponent utilityEatHealthComponent = new FormulaComponent { parameter = Parameters.cEatHealth, coefficient = 0.02f };
+		FormulaComponent utilityEatHungerComponent = new FormulaComponent { parameter = Parameters.cEatHunger, coefficient = 0.7f };
+		FormulaComponent utilityEatGeneralLoveComponent = new FormulaComponent { parameter = Parameters.cEatGeneralLove, coefficient = 0.0f };
+		FormulaComponent utilityEatPlayerOneLoveComponent = new FormulaComponent { parameter = Parameters.cEatPlayerOneLove, coefficient = 0.2f };
+		FormulaComponent utilityEatPlayerTwoLoveComponent = new FormulaComponent { parameter = Parameters.cEatPlayerTwoLove, coefficient = 0.05f };
 
 		FormulaComponent[] utilityEatComponentList = new FormulaComponent[6];
 
@@ -174,7 +150,7 @@ public class Creature : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		//check if the creature is dead
+		// check if the creature is dead
 		// TODO decide what are the levels of the meters that determine death
 
 		// decrease meters
@@ -465,11 +441,10 @@ public class FormulaComponent
 	/// </summary>
 	public Creature.Parameters parameter;
 
-	// TODO rename 'value' to 'coefficient'
 	/// <summary>
 	/// The value of the component.
 	/// </summary>
-	public float value;
+	public float coefficient;
 }
 
 /// <summary>
@@ -478,6 +453,7 @@ public class FormulaComponent
 [Serializable]
 public class Formula
 {
+	// TODO get reference to the creature in Awake function
 	public Creature creature;
 
 	/// <summary>
@@ -498,7 +474,7 @@ public class Formula
 		float result = 0f;
 		foreach (var formulaComp in components) {
 			var value = creature.GetValue (formulaComp.parameter, values);
-			result += value * formulaComp.value;
+			result += value * formulaComp.coefficient;
 		}
 		return result;
 	}
