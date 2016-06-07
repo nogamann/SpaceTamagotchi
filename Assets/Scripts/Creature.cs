@@ -27,12 +27,12 @@ public class Creature : MonoBehaviour
 		bored = 9,
 		ill = 10,
 		angry = 11,
-		eating = 12,
-		playing = 13,
-		loving = 14,
-		notWanting = 15,
-		blinking = 16,
-		takingMedicine = 17
+		eating = 16,
+		playing = 17,
+		loving = 18,
+		notWanting = 19,
+		blinking = 20,
+		takingMedicine = 21
     }
 
     // TODO: should be updated everytime love changes
@@ -61,8 +61,8 @@ public class Creature : MonoBehaviour
 
 	public CreatureParams currentMood;
 
-	ThingObject pizza = new ThingObject() {itemType = ThingObject.ItemType.Food};
-
+	ThingObject burgerItem;
+	GameObject hamburger;
 
 
 	void Awake ()
@@ -72,7 +72,7 @@ public class Creature : MonoBehaviour
 		foreach (var item in _formulas) {
 			formulasDictionary [item.parameter] = item;
 		}
-			
+
 		// init moods dictionary
 		moodsDictionary = new Dictionary<CreatureParams, Formula> ();
 		foreach (var item in _formulas) {
@@ -98,6 +98,10 @@ public class Creature : MonoBehaviour
 			{CreatureParams.playerOneLove, 0},
 			{CreatureParams.playerTwoLove, 0}
 		};
+			
+		burgerItem = new ThingObject() {itemType = ThingObject.ItemType.Food, joy = 1, health = -2, hunger = 5, love = 1};
+		hamburger = new GameObject ();
+		hamburger.AddComponent (burgerItem);
 	}
 
 	// Use this for initialization
@@ -107,58 +111,54 @@ public class Creature : MonoBehaviour
 		foreach (var action in actionsDictionary) {
 			Debug.Log (action.Key);
 		}
-
-		Debug.Log ("formulas in formulasDictionary:");
-		foreach (var formula in formulasDictionary) {
-			Debug.Log (formula.Key);
-		}
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		//check if the creature is dead
+		// check if the creature is dead
 		IsDead();
 
 		// update mood
-		CalculateAndUpdateMood();
+		StartCoroutine(CalculateAndUpdateMood ());
 
 		// TODO remove after debug!
 		if (Input.GetKeyDown (KeyCode.C)) {
 			Debug.Log ("'c' is pressed!");
-			ChooseAction (pizza);
+			Debug.Assert (this.hamburger != null);
+			ChooseAction (this.hamburger);
 		}
 	}
 
 	void FixedUpdate()
 	{
 		// update meters as time passes
-		// TODO decrease meters by the current mood
 		DecreaseMeters ();
 	}
 
 	void IsDead()
 	{
-		if (metersDictionary [CreatureParams.joy] <= 0.1 && metersDictionary [CreatureParams.health] <= 0.1 && metersDictionary [CreatureParams.generalLove] <= 0.1) {
+		if (metersDictionary[CreatureParams.joy] <= 0.1 && metersDictionary[CreatureParams.health] <= 0.1 && metersDictionary[CreatureParams.generalLove] <= 0.1)
+		{
 			// TODO game over
 		}
 	}
+
 
     /// <summary>
     /// eat, play or take medicine
     /// </summary>
     /// <param name="thing">food, toy or medicine.</param>
-    void ChooseAction(ThingObject thing)
+	void ChooseAction(ThingObject item)
     {
+		Debug.Assert (item != null);
+
 		// TODO create an idle action to prevent null pointer exception in the rare case no action was chosen
 		CreatureParams chosenAction = CreatureParams.eating;
 		float actionScore = 0.0f;
 
 		// calculate the possible actions' scores according to it's type
 		foreach (CreatureParams action in actionsDictionary.Keys) {
-
-			// TODO remove
-			Debug.LogWarning ("action: " + action);
 
 			float currentActionScore = GetValue(action, metersDictionary);
 
@@ -171,7 +171,7 @@ public class Creature : MonoBehaviour
 		Debug.Log ("Chosen action is: " + chosenAction);
 
 		// perform the chosen action
-		DoAction(thing, chosenAction);
+		DoAction(item, chosenAction);
     }
 
 	/// <summary>
@@ -181,27 +181,18 @@ public class Creature : MonoBehaviour
 	/// <param name="action">Action.</param>
 	void DoAction(ThingObject item, CreatureParams action)
 	{
+		Debug.Assert (item != null);
+
 		Debug.Log ("Performing action: " + action + " on " + item);
 
 		// TODO play relevant animation
 
 		// update the relevant meters according to the effect of the action
-		foreach (var meter in metersDictionary) {
-			
+		foreach (var meter in metersDictionary.Keys) {
+			metersDictionary[meter] += item.metersEffect [meter];
 		}
 
-
-
-		//        //TODO: play relevant animation
-		//
-		//        health += (thing.Health * Mathf.Pow(health, 3));
-		//        hunger += (thing.Hunger * Mathf.Pow(hunger, 3));
-		//        joy += (thing.Joy * Mathf.Pow(joy, 3));
-		//
-		//        // TODO: change the love of the current player only
-		//        playerOneLove += (thing.Love * Mathf.Pow(playerOneLove, 3));
-		//
-		//        // TODO add impact of the love to the performing player (should be implemented as a formula in the enum)
+        // TODO add impact of the love to the performing player (should be implemented as a formula in the enum)
 	}
 
     /// <summary>
@@ -209,18 +200,15 @@ public class Creature : MonoBehaviour
     /// </summary>
 	IEnumerator CalculateAndUpdateMood()
     {
-		Debug.LogWarning ("mood update");
 		while (true) {
 			// init the next mood and it's score with the current mood
 			var nextMood = currentMood;
 			Debug.Assert (metersDictionary != null);
 			var nextMoodScore = GetValue (currentMood, metersDictionary);
 
-
 			// find the mood with higest score
 			foreach (var mood in moodsDictionary.Keys) {
 				var moodScore = GetValue (mood, metersDictionary);
-				Debug.LogWarning ("mood is: " + mood + ", it's score is: " + moodScore);
 				if (moodScore > nextMoodScore) {
 					nextMood = mood;
 					nextMoodScore = moodScore;
@@ -230,8 +218,11 @@ public class Creature : MonoBehaviour
 			// change the current mood to the mood with the highest score
 			currentMood = nextMood;
 
+			// TODO remove
+//			Debug.LogError ("MOOD is: " + currentMood);
+
 			// delay the mood calculation
-			yield return new WaitForSeconds (0.5f);
+			yield return new WaitForSeconds (updateMoodInterval);
 		}
     }
 
@@ -240,6 +231,7 @@ public class Creature : MonoBehaviour
 	/// </summary>
     void DecreaseMeters()
     {
+		// TODO change the xUpdate parameters with the enum coefficients.
 		metersDictionary[CreatureParams.joy] += joyUpdate * Time.fixedDeltaTime;
 		metersDictionary[CreatureParams.health] += healthUpdate * Time.fixedDeltaTime;
 		metersDictionary[CreatureParams.hunger] += hungerUpdate * Time.fixedDeltaTime;
@@ -247,14 +239,14 @@ public class Creature : MonoBehaviour
     }
 
 	/// <summary>
-	/// Gets the value.
+	/// Gets the value of a Parameter.
 	/// </summary>
-	/// <returns>The value.</returns>
+	/// <returns>The value of the parameter.</returns>
 	/// <param name="parameter">Parameter.</param>
 	/// <param name="values">Values.</param>
 	public float GetValue(CreatureParams parameter, Dictionary<CreatureParams, float> values) {
 		if (values.ContainsKey(parameter)) return values[parameter];
-		if (moodsDictionary.ContainsKey(parameter)) return moodsDictionary[parameter].Eval(values);
+		if (formulasDictionary.ContainsKey(parameter)) return formulasDictionary[parameter].Eval(values);
 		throw new Exception("No parameter " + parameter + " given and no formula to calculate it");
 	}
 
@@ -274,7 +266,7 @@ public class Creature : MonoBehaviour
 		if (thing == null) {
 			Debug.LogError ("Collided with something that is not a ThingObject!");
 			return;
-		}
+			}
 
 		// perform the relevant action with the thing
 		ChooseAction (thing);
@@ -309,6 +301,7 @@ public class FormulaComponent
 [Serializable]
 public class Formula
 {
+	// TODO get reference to the creature in Awake function
 	public Creature creature;
 
 	/// <summary>
@@ -327,7 +320,10 @@ public class Formula
 	/// <param name="values">Values.</param>
 	public float Eval(Dictionary<Creature.CreatureParams, float> values) {
 		float result = 0f;
+
 		foreach (var formulaComp in components) {
+			Debug.Assert (values != null);
+			Debug.Assert (formulaComp != null);
 			var value = creature.GetValue (formulaComp.parameter, values);
 			result += value * formulaComp.coefficient;
 		}
