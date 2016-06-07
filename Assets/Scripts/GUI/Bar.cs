@@ -22,19 +22,19 @@ public class Bar : MonoBehaviour
         switch (barType)
         {
             case BarType.HealthBar:
-                scrollBar.size = creature.health;
+				scrollBar.size = creature.metersDictionary[Creature.CreatureParams.health];
                 break;
 
             case BarType.HungerBar:
-                scrollBar.size = creature.hunger;
+				scrollBar.size = creature.metersDictionary[Creature.CreatureParams.hunger];
                 break;
 
             case BarType.JoyBar:
-                scrollBar.size = creature.joy;
+				scrollBar.size = creature.metersDictionary[Creature.CreatureParams.joy];
                 break;
 
             case BarType.LoveBar:
-				scrollBar.size = creature.generalLove;
+				scrollBar.size = creature.metersDictionary[Creature.CreatureParams.generalLove];
                 break;
 
                 //TODO add cases for playerOneLove and playerTwoLove
