@@ -12,6 +12,8 @@ public class ThingObject : MonoBehaviour
         Medicine
     }
 
+	public Creature.CreatureParams[] metersEffect;
+
 	// Fileds
 	public float health;
 	public float love;

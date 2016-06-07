@@ -15,34 +15,24 @@ public class Creature : MonoBehaviour
 	/// </summary>
     public enum CreatureParams
     {
-		joy,
-		health,
-		hunger,
-		generalLove,
-		playerOneLove,
-		playerTwoLove,
-		cDecreaseJoy,
-		cDecreaseHealth,
-		cDecreaseHunger,
-		cDecreaseGeneralLove,
-		cHappyJoy,
-		cHappyHealth,
-		cHappyHunger,
-		cHappyGeneralLove,
-		cHappyPlayerOneLove,
-		cHappyPlayerTwoLove,
-		happy,
-		sad,
-		hungry,
-		bored,
-		ill,
-		angry,
-		eating = 16,
-		playing,
-		loving,
-		notWanting,
-		blinking,
-		takingMedicine
+		joy = 0,
+		health = 1,
+		hunger = 2,
+		generalLove = 3,
+		playerOneLove = 4,
+		playerTwoLove = 5,
+		happy = 6,
+		sad = 7,
+		hungry = 8,
+		bored = 9,
+		ill = 10,
+		angry = 11,
+		eating = 12,
+		playing = 13,
+		loving = 14,
+		notWanting = 15,
+		blinking = 16,
+		takingMedicine = 17
     }
 
     // TODO: should be updated everytime love changes
@@ -116,6 +106,11 @@ public class Creature : MonoBehaviour
 		Debug.Log ("actions in actionsDictionary:");
 		foreach (var action in actionsDictionary) {
 			Debug.Log (action.Key);
+		}
+
+		Debug.Log ("formulas in formulasDictionary:");
+		foreach (var formula in formulasDictionary) {
+			Debug.Log (formula.Key);
 		}
 	}
 
@@ -214,15 +209,18 @@ public class Creature : MonoBehaviour
     /// </summary>
 	IEnumerator CalculateAndUpdateMood()
     {
+		Debug.LogWarning ("mood update");
 		while (true) {
 			// init the next mood and it's score with the current mood
 			var nextMood = currentMood;
 			Debug.Assert (metersDictionary != null);
 			var nextMoodScore = GetValue (currentMood, metersDictionary);
 
+
 			// find the mood with higest score
 			foreach (var mood in moodsDictionary.Keys) {
 				var moodScore = GetValue (mood, metersDictionary);
+				Debug.LogWarning ("mood is: " + mood + ", it's score is: " + moodScore);
 				if (moodScore > nextMoodScore) {
 					nextMood = mood;
 					nextMoodScore = moodScore;
