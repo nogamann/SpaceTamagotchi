@@ -9,9 +9,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 465924}
   - 212: {fileID: 21242052}
-  - 60: {fileID: 6099348}
   - 114: {fileID: 11472844}
   - 114: {fileID: 11447036}
+  - 60: {fileID: 6057996}
   m_Layer: 8
   m_Name: Item
   m_TagString: Untagged
@@ -26,12 +26,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 60.71034, y: -99, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: 2, y: -3, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!60 &6099348
+--- !u!60 &6057996
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -45,12 +45,34 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Points:
     m_Paths:
-    - - {x: -0.05897868, y: 0.060730472}
-      - {x: -0.05897868, y: -0.055475168}
-      - {x: 0.04346808, y: -0.064234026}
-      - {x: 0.058978718, y: -0.04248217}
-      - {x: 0.057226963, y: 0.04897867}
-      - {x: 0.033978753, y: 0.06073055}
+    - - {x: 0.97999996, y: 0.01}
+      - {x: 0.97999996, y: 0.06}
+      - {x: 0.95, y: 0.089999996}
+      - {x: 0.81, y: 0.16}
+      - {x: 0.71999997, y: 0.26999998}
+      - {x: 0.53, y: 0.32999998}
+      - {x: 0.31, y: 0.35999998}
+      - {x: 0.26, y: 0.42}
+      - {x: 0.17, y: 0.45}
+      - {x: -0.049999997, y: 0.45}
+      - {x: -0.19, y: 0.53}
+      - {x: -0.41, y: 0.53}
+      - {x: -0.57, y: 0.48999998}
+      - {x: -0.75, y: 0.35}
+      - {x: -0.83, y: 0.25}
+      - {x: -0.96, y: 0.25}
+      - {x: -0.97999996, y: 0.17}
+      - {x: -0.97999996, y: 0.089999996}
+      - {x: -0.84, y: -0.01}
+      - {x: -0.74, y: -0.13}
+      - {x: -0.47, y: -0.29}
+      - {x: -0.14999999, y: -0.38}
+      - {x: -0.04, y: -0.39999998}
+      - {x: 0.11, y: -0.41}
+      - {x: 0.51, y: -0.41}
+      - {x: 0.7, y: -0.35}
+      - {x: 0.82, y: -0.19999999}
+      - {x: 0.90999997, y: -0.099999994}
 --- !u!114 &11447036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -81,7 +103,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  lowerBoundOfMovement: {fileID: 0}
 --- !u!212 &21242052
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -108,7 +129,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 75674c13c5dfaa44bbd2d8c85c833cd1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

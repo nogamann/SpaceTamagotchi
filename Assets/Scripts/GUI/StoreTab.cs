@@ -27,7 +27,7 @@ public class StoreTab : MonoBehaviour
             //if the player clicks on a store tab that is already open, it will close the store
             else
             {
-                Debug.Log(this.name);
+                //Debug.Log(this.name);
                 storeTabsAnimator.SetTrigger("playStoreAnim");
                 //Debug.Log("closing store");
             }

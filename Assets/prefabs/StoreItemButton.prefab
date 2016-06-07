@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 158432, guid: bc4c65c424d0598419fed12a4c0983fb, type: 2}
+  moneyError: {fileID: 0}
 --- !u!114 &11463238
 MonoBehaviour:
   m_ObjectHideFlags: 1

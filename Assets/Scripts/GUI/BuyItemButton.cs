@@ -5,6 +5,8 @@ using System.Collections;
 public class BuyItemButton : MonoBehaviour {
 
     public GameObject itemPrefab;
+    //public GameObject moneyError;
+
     void Start()
     {
         this.GetComponent<Image>().sprite = itemPrefab.GetComponent<SpriteRenderer>().sprite;
@@ -15,7 +17,12 @@ public class BuyItemButton : MonoBehaviour {
     {
         if (GameManager.buyItem(itemPrefab.GetComponent<ThingObject>()))
         {
-            Instantiate(itemPrefab);
+            Instantiate(itemPrefab, new Vector3(5f,-4f,0), Quaternion.identity);
+        }
+        else
+        {
+            Debug.Log("not enough money!");
+            transform.Find("DontHaveEnoughMoneyError").gameObject.SetActive(true);
         }
     }
 

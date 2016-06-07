@@ -14,7 +14,7 @@ public class TouchControl : MonoBehaviour
     Touch draggingTouch;
     Vector3 touchPosition;
     public Camera mainCamera;
-    public BoxCollider2D lowerBoundOfMovement;
+    
 
 
     //TODO change to in enabled
@@ -28,6 +28,7 @@ public class TouchControl : MonoBehaviour
 
     void Start()
     {
+        mainCamera = FindObjectOfType<Camera>();
         isDragged = false;
     }
 
@@ -101,16 +102,7 @@ public class TouchControl : MonoBehaviour
         if (isDragged)
         {
             Vector3 touchWorldPos = mainCamera.ScreenToWorldPoint(obj.position);
-            //double yAxisLowerBound = mainCamera.ScreenToWorldPoint(lowerBoundOfMovement.bounds.min).y;
-            //Debug.Log("Lower bound: " + yAxisLowerBound);
-            //Debug.Log("touch: " + touchWorldPos);
-
-            //if (touchWorldPos.y > yAxisLowerBound)
-            if (!lowerBoundOfMovement.bounds.Contains(obj.position))
-            {
-                this.transform.position = touchWorldPos + offset;
-            }
-            
+            this.transform.position = touchWorldPos + offset;
         }
     }
 
