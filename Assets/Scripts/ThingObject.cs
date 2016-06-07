@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class ThingObject : MonoBehaviour
@@ -24,6 +25,17 @@ public class ThingObject : MonoBehaviour
 	public float attractiveness;
 
     public ItemType itemType;
+
+	public Dictionary<Creature.CreatureParams, float> metersEffect;
+
+	void Awake(){
+		metersEffect = new Dictionary<Creature.CreatureParams, float> () {
+			{ Creature.CreatureParams.joy, joy },
+			{ Creature.CreatureParams.health, health },
+			{ Creature.CreatureParams.hunger, hunger },
+			{ Creature.CreatureParams.generalLove, love }
+		};
+	}
 
 
 	public float Joy {

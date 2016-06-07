@@ -42,7 +42,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 199944}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -4815}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 797.65063, y: 797.6502, z: 797.6502}
   m_Children:
   - {fileID: 22403262}
@@ -157,35 +157,120 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f99d987dae195a4db142c8a5f9a468a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joy: 0.5
-  health: 0.5
-  hunger: 0.5
-  playerOneLove: 0.5
-  playrTwoLove: 0.5
-  generalLove: 0.5
-  hungerUpdate: 0
+  updateMoodInterval: 30
+  hungerUpdate: -0.002
   healthUpdate: 0
-  joyUpdate: 0
+  joyUpdate: -0.0001
   playerOneLoveUpdate: 0
   playrTwoLoveUpdate: 0
   generalLoveUpdate: 0
-  creature: {fileID: 0}
+  creature: {fileID: 11439286}
   _formulas:
-  - creature: {fileID: 0}
+  - creature: {fileID: 11439286}
+    parameter: 6
+    components:
+    - parameter: 0
+      coefficient: 0.6
+    - parameter: 1
+      coefficient: 0.4
+  - creature: {fileID: 11439286}
+    parameter: 7
+    components:
+    - parameter: 0
+      coefficient: 0.5
+    - parameter: 2
+      coefficient: 0.2
+    - parameter: 3
+      coefficient: 0.2
+    - parameter: 1
+      coefficient: 0.1
+  - creature: {fileID: 11439286}
+    parameter: 8
+    components:
+    - parameter: 2
+      coefficient: 1
+  - creature: {fileID: 11439286}
+    parameter: 9
+    components:
+    - parameter: 0
+      coefficient: 0.9
+    - parameter: 3
+      coefficient: 0.1
+  - creature: {fileID: 11439286}
+    parameter: 10
+    components:
+    - parameter: 0
+      coefficient: 0.1
+    - parameter: 1
+      coefficient: 0.7
+    - parameter: 2
+      coefficient: 0.1
+    - parameter: 3
+      coefficient: 0.1
+  - creature: {fileID: 11439286}
+    parameter: 11
+    components:
+    - parameter: 0
+      coefficient: 1
+  - creature: {fileID: 11439286}
     parameter: 16
     components:
     - parameter: 0
-      value: 0.4
-    - parameter: 1
-      value: 0.6
-  - creature: {fileID: 0}
-    parameter: 16
+      coefficient: 0.3
+    - parameter: 8
+      coefficient: 0.7
+  - creature: {fileID: 11439286}
+    parameter: 17
     components:
     - parameter: 0
-      value: 0.4
+      coefficient: 1
+  - creature: {fileID: 11439286}
+    parameter: 18
+    components:
+    - parameter: 11
+      coefficient: 0
+    - parameter: 2
+      coefficient: 0
+    - parameter: 0
+      coefficient: 0
     - parameter: 1
-      value: 0.6
-  currentMood: 16
+      coefficient: 0
+  - creature: {fileID: 11439286}
+    parameter: 19
+    components:
+    - parameter: 6
+      coefficient: 0
+    - parameter: 2
+      coefficient: 0
+    - parameter: 0
+      coefficient: 0
+    - parameter: 1
+      coefficient: 0
+  - creature: {fileID: 11439286}
+    parameter: 20
+    components:
+    - parameter: 8
+      coefficient: 0
+    - parameter: 2
+      coefficient: 0
+    - parameter: 0
+      coefficient: 0
+    - parameter: 1
+      coefficient: 0
+  - creature: {fileID: 11439286}
+    parameter: 21
+    components:
+    - parameter: 8
+      coefficient: 0
+    - parameter: 2
+      coefficient: 0
+    - parameter: 0
+      coefficient: 0
+    - parameter: 1
+      coefficient: 0
+  _moods: 060000000700000008000000090000000a0000000b000000
+  _actions: 100000001100000012000000130000001400000015000000
+  currentMood: 6
 --- !u!222 &22228294
 CanvasRenderer:
   m_ObjectHideFlags: 1
