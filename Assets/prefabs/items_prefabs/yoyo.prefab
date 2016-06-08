@@ -107,10 +107,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefc685df30825e478c1990b8e3ab567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  love: 0
-  hunger: 0
-  joy: 0
+  health: 0.1
+  love: 0.1
+  hunger: -0.1
+  joy: 0.2
   playerOneLove: 0
   playerTwoLove: 0
   price: 10
