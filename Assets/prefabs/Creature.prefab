@@ -11,7 +11,7 @@ GameObject:
   - 212: {fileID: 21201712}
   - 95: {fileID: 9550860}
   - 60: {fileID: 6083270}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: CreatureSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ GameObject:
   - 114: {fileID: 11439286}
   - 114: {fileID: 11430242}
   - 60: {fileID: 6048552}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Creature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f99d987dae195a4db142c8a5f9a468a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMoodInterval: 30
+  updateMoodInterval: 300
   hungerUpdate: -0.002
   healthUpdate: 0
   joyUpdate: -0.0001

@@ -13,6 +13,7 @@ namespace UnityEngine.Networking
 		public Text showIP;
 		public Canvas loginCanvas;
 		public Canvas canvas;
+		public Sprite egg;
 		public InputField friendsIP;
 		[SerializeField] public bool showGUI = true;
 		[SerializeField] public int offsetX;
