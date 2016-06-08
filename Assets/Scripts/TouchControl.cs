@@ -123,6 +123,8 @@ public class TouchControl : NetworkBehaviour
 				local = pc;
 			}
 		}
+		Debug.Assert (gameObject != null);
+		Debug.Assert (local != null);
 		local.GrabItem (gameObject);
 
         Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position));

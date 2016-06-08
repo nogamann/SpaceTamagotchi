@@ -207,7 +207,6 @@ public class Creature : MonoBehaviour
 		Debug.Log ("Chosen action is: " + chosenAction);
 
         // perform the chosen action
-
         DoAction(item, chosenAction);
     }
 
@@ -219,9 +218,7 @@ public class Creature : MonoBehaviour
 	void DoAction(ThingObject item, CreatureParams action)
 	{
 		Debug.Assert (item != null);
-
 		Debug.Log ("Performing action: " + action + " on " + item);
-
 
 
         // update the relevant meters according to the effect of the action
