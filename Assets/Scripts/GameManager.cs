@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Collections.Generic;
+using System;
+
 
 public class GameManager : NetworkBehaviour 
 {
@@ -9,11 +12,33 @@ public class GameManager : NetworkBehaviour
     public float floatMoney;
     public float moneyEarnedPerSec;
     public Text moneyText;
-	//TODO inventory list
+	
 
-	public GameObject prefab;
-	  
-	public void decreaseMoney(float amount){
+    [Serializable]
+    public class ItemsPrefabs{
+        public ThingObject.SpecificItemType specificItemType;
+        public GameObject itemPrefab;
+    
+    }
+
+    public ItemsPrefabs[] itemsPrefabs;
+
+    public Dictionary<ThingObject.SpecificItemType, GameObject> itemsPrefabsDictionary = new Dictionary<ThingObject.SpecificItemType, GameObject>();
+
+
+    void Start()
+    {
+
+        itemsPrefabsDictionary = new Dictionary<ThingObject.SpecificItemType, GameObject>();
+       
+        foreach (ItemsPrefabs item in itemsPrefabs)
+        {
+            itemsPrefabsDictionary[item.specificItemType] = item.itemPrefab;
+        }
+    }
+
+
+    public void decreaseMoney(float amount){
 		if (!isServer) {
 			return;
 		}
@@ -29,8 +54,9 @@ public class GameManager : NetworkBehaviour
         moneyText.text = money + "$";
     }
 
-	public void addObject(){
-		var go = (GameObject)Instantiate (prefab, transform.position + new Vector3 (2, 2, 0), Quaternion.identity);
+	public void addObject(ThingObject.SpecificItemType type)
+    {
+		var go = (GameObject)Instantiate (itemsPrefabsDictionary[type], transform.position + new Vector3 (2, 2, 0), Quaternion.identity);
 		NetworkServer.Spawn (go);
 	}
 }

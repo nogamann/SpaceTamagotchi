@@ -26,7 +26,7 @@ public class BuyItemButton : MonoBehaviour {
 			}
 		}
 		int price = itemPrefab.GetComponent<ThingObject> ().price;
-		local.BuyItem (price);
+		local.BuyItem (price, itemPrefab.GetComponent<ThingObject>().specificTypeItem);
 
 
 //        if (GameManager.buyItem(itemPrefab.GetComponent<ThingObject>()))
