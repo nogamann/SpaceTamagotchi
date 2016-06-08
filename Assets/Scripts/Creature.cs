@@ -64,6 +64,7 @@ public class Creature : MonoBehaviour
 	ThingObject burgerItem;
 	GameObject hamburger;
 
+    Animator animator;
 
 	void Awake ()
 	{
@@ -99,9 +100,9 @@ public class Creature : MonoBehaviour
 			{CreatureParams.playerTwoLove, 0}
 		};
 			
-		burgerItem = new ThingObject() {itemType = ThingObject.ItemType.Food, joy = 1, health = -2, hunger = 5, love = 1};
-		hamburger = new GameObject ();
-		hamburger.AddComponent (burgerItem);
+		//burgerItem = new ThingObject() {itemType = ThingObject.ItemType.Food, joy = 1, health = -2, hunger = 5, love = 1};
+		//hamburger = new GameObject ();
+		//hamburger.AddComponent(burgerItem);
 	}
 
 	// Use this for initialization
@@ -111,6 +112,8 @@ public class Creature : MonoBehaviour
 		foreach (var action in actionsDictionary) {
 			Debug.Log (action.Key);
 		}
+
+        animator = this.GetComponentInChildren<Animator>();
 	}
 
 	// Update is called once per frame
@@ -126,7 +129,7 @@ public class Creature : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.C)) {
 			Debug.Log ("'c' is pressed!");
 			Debug.Assert (this.hamburger != null);
-			ChooseAction (this.hamburger);
+			//ChooseAction (this.hamburger);
 		}
 	}
 
@@ -149,7 +152,7 @@ public class Creature : MonoBehaviour
     /// eat, play or take medicine
     /// </summary>
     /// <param name="thing">food, toy or medicine.</param>
-	void ChooseAction(ThingObject item)
+	public void ChooseAction(ThingObject item)
     {
 		Debug.Assert (item != null);
 
@@ -170,8 +173,9 @@ public class Creature : MonoBehaviour
 
 		Debug.Log ("Chosen action is: " + chosenAction);
 
-		// perform the chosen action
-		DoAction(item, chosenAction);
+        // perform the chosen action
+
+        DoAction(item, chosenAction);
     }
 
 	/// <summary>
@@ -185,15 +189,33 @@ public class Creature : MonoBehaviour
 
 		Debug.Log ("Performing action: " + action + " on " + item);
 
-		// TODO play relevant animation
 
-		// update the relevant meters according to the effect of the action
-		foreach (var meter in metersDictionary.Keys) {
-			metersDictionary[meter] += item.metersEffect [meter];
-		}
+
+        // update the relevant meters according to the effect of the action
+        for (int i = 0; i <= 5; i++) {
+            metersDictionary[(CreatureParams)i] += item.metersEffect[(CreatureParams)i];
+        }
+
+
+        animator.SetInteger("action", (int)action);
+        animator.SetTrigger("canChange");
+        animator.SetInteger("mood", 0);
+
+
+        if (item.itemType != ThingObject.ItemType.Game)
+        {
+            //Debug.Log("item isnt game");
+            if (action == CreatureParams.eating || action == CreatureParams.takingMedicine)
+            {
+                //Debug.Log("destroy item");
+                Destroy(item.gameObject);
+            }
+        }
+        
+
 
         // TODO add impact of the love to the performing player (should be implemented as a formula in the enum)
-	}
+    }
 
     /// <summary>
     /// Calculate what is the creature's mood based on his meters, and update currentMood.
@@ -207,22 +229,28 @@ public class Creature : MonoBehaviour
 			var nextMoodScore = GetValue (currentMood, metersDictionary);
 
 			// find the mood with higest score
-			foreach (var mood in moodsDictionary.Keys) {
-				var moodScore = GetValue (mood, metersDictionary);
-				if (moodScore > nextMoodScore) {
-					nextMood = mood;
-					nextMoodScore = moodScore;
-				}
-			}
+			//foreach (var mood in moodsDictionary.Keys) {
+			//	var moodScore = GetValue (mood, metersDictionary);
+			//	if (moodScore > nextMoodScore) {
+			//		nextMood = mood;
+			//		nextMoodScore = moodScore;
+			//	}
+			//}
 
 			// change the current mood to the mood with the highest score
 			currentMood = nextMood;
 
-			// TODO remove
-//			Debug.LogError ("MOOD is: " + currentMood);
+            if (animator.GetInteger("mood") != (int)currentMood)
+            {
+                animator.SetInteger("mood", (int)currentMood);
+                animator.SetTrigger("canChange");
+            }
+           
+            // TODO remove
+            Debug.LogError("MOOD is: " + (int)currentMood + currentMood);
 
-			// delay the mood calculation
-			yield return new WaitForSeconds (updateMoodInterval);
+            // delay the mood calculation
+            yield return new WaitForSeconds (updateMoodInterval);
 		}
     }
 
@@ -260,21 +288,21 @@ public class Creature : MonoBehaviour
 		// TODO change name and maybe the signature (if the object should not be effected by the collision, but by being over the creature).
 
 		// get the object that touched the creature
-		ThingObject thing = collision.collider.GetComponent<ThingObject>();
+		//ThingObject thing = collision.collider.GetComponent<ThingObject>();
 
 		// 
-		if (thing == null) {
-			Debug.LogError ("Collided with something that is not a ThingObject!");
-			return;
-			}
+		//if (thing == null) {
+		//	Debug.LogError ("Collided with something that is not a ThingObject!");
+		//	return;
+		//	}
 
 		// perform the relevant action with the thing
-		ChooseAction (thing);
+		//ChooseAction (thing);
 
 		// destroy the object if it's consumable (food or medicine)
-		if (thing.itemType != ThingObject.ItemType.Game) {
-			Destroy (thing);
-		}
+		//if (thing.itemType != ThingObject.ItemType.Game) {
+		//	Destroy (thing);
+		//}
 	}
 }
 

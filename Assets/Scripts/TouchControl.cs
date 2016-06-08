@@ -14,6 +14,7 @@ public class TouchControl : MonoBehaviour
     Touch draggingTouch;
     Vector3 touchPosition;
     public Camera mainCamera;
+    Creature creature;
     
 
 
@@ -30,6 +31,7 @@ public class TouchControl : MonoBehaviour
     {
         mainCamera = FindObjectOfType<Camera>();
         isDragged = false;
+        creature = FindObjectOfType<Creature>();
     }
 
     void Update()
@@ -108,6 +110,7 @@ public class TouchControl : MonoBehaviour
 
     private void OnTouchDown(PointerEventData obj)
     {
+        Debug.Log("touch down");
         Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position));
         if (hit == this.GetComponent<Collider2D>())
         {
@@ -120,6 +123,13 @@ public class TouchControl : MonoBehaviour
     private void OnTouchUp(PointerEventData obj)
     {
         isDragged = false;
+        int creatureLayer = LayerMask.GetMask("creature");
+        Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position), creatureLayer);
+        if (hit != null)
+        {
+            Debug.Log("hit creature");
+            creature.ChooseAction(this.GetComponent<ThingObject>());
+        }
     }
 
 }
