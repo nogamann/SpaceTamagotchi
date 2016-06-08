@@ -15,7 +15,8 @@ public class TouchControl : NetworkBehaviour
     Touch draggingTouch;
     Vector3 touchPosition;
     public Camera mainCamera;
-    //public BoxCollider2D lowerBoundOfMovement;
+
+    Creature creature;
 
 
     //TODO change to in enabled
@@ -31,7 +32,9 @@ public class TouchControl : NetworkBehaviour
 
     void Start()
     {
+        mainCamera = FindObjectOfType<Camera>();
         isDragged = false;
+        creature = FindObjectOfType<Creature>();
     }
 
     void Update()
@@ -104,16 +107,9 @@ public class TouchControl : NetworkBehaviour
 		if (isDragged & hasAuthority)
         {
             Vector3 touchWorldPos = mainCamera.ScreenToWorldPoint(obj.position);
-            //double yAxisLowerBound = mainCamera.ScreenToWorldPoint(lowerBoundOfMovement.bounds.min).y;
-            //Debug.Log("Lower bound: " + yAxisLowerBound);
-            //Debug.Log("touch: " + touchWorldPos);
 
-            //if (touchWorldPos.y > yAxisLowerBound)
-//            if (!lowerBoundOfMovement.bounds.Contains(obj.position))
-//            {
-                this.transform.position = touchWorldPos + offset;
-//            }
-            
+            this.transform.position = touchWorldPos + offset;
+
         }
     }
 
@@ -150,7 +146,13 @@ public class TouchControl : NetworkBehaviour
 		}
  		local.FreeItem (gameObject);
         isDragged = false;
+        int creatureLayer = LayerMask.GetMask("creature");
+        Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position), creatureLayer);
+        if (hit != null)
+        {
+            Debug.Log("hit creature");
+            creature.ChooseAction(this.GetComponent<ThingObject>());
+        }
     }
 
 }
-

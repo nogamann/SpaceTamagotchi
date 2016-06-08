@@ -2,9 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class BuyItemButton : MonoBehaviour { 
+public class BuyItemButton : MonoBehaviour {
 
     public GameObject itemPrefab;
+    //public GameObject moneyError;
 
     void Start()
     {
@@ -14,19 +15,15 @@ public class BuyItemButton : MonoBehaviour {
 
 	public void TryToBuy()
     {
-		Debug.Log ("try to buy");
-
-		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Finger");
-		PlayerController local = null;
-		foreach (GameObject go in objects){
-			PlayerController pc = go.GetComponent<PlayerController>();
-			if (pc.isLocalPlayer) {
-				local = pc;
-			}
-		}
-		Debug.Log ("itemPrefab: " + itemPrefab.ToString ());
-		Debug.Log ("local: " + local.ToString ());
-		local.BuyItem (itemPrefab);
+        if (GameManager.buyItem(itemPrefab.GetComponent<ThingObject>()))
+        {
+            Instantiate(itemPrefab, new Vector3(5f,-4f,0), Quaternion.identity);
+        }
+        else
+        {
+            Debug.Log("not enough money!");
+            transform.Find("DontHaveEnoughMoneyError").gameObject.SetActive(true);
+        }
     }
 
 }

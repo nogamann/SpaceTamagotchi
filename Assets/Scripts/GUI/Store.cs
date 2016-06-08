@@ -16,19 +16,21 @@ public class Store : MonoBehaviour
     public GameObject storeButtonPrefab;
     public ItemsList[] Stores;
 
-    void Start()
+    void Awake()
     {
         foreach (ItemsList itemsList in Stores)
             {
-            RectTransform storeContentRectTransform = itemsList.storeContent.GetComponent<RectTransform>();
-            storeContentRectTransform.offsetMax = new Vector2(itemsList.itemsPrefabs.Length * 70, 0);
+            int itemIndex = 0;
             foreach (GameObject itemPrefab in itemsList.itemsPrefabs)
             {
-                GameObject newStoreButton = Instantiate(storeButtonPrefab);
-                newStoreButton.GetComponent<BuyItemButton>().itemPrefab = itemPrefab;
-                newStoreButton.transform.parent = itemsList.storeContent.transform;
+                Transform storeButton = itemsList.storeContent.transform.GetChild(itemIndex);
+                if (storeButton != null)
+                {
+                    storeButton.GetComponent<BuyItemButton>().itemPrefab = itemPrefab;
+                }
+                itemIndex ++;
             }
-            itemsList.storeContent.GetComponent<HorizontalLayoutGroup>().enabled = true;
+            
         }
     }
 }

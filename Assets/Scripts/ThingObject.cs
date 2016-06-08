@@ -18,7 +18,8 @@ public class ThingObject : MonoBehaviour
 	public float love;
 	public float hunger;
 	public float joy;
-
+    public float playerOneLove;
+    public float playerTwoLove;
     public int price;
 
 	// the level of atractiveness of the item to the creature
@@ -27,13 +28,16 @@ public class ThingObject : MonoBehaviour
     public ItemType itemType;
 
 	public Dictionary<Creature.CreatureParams, float> metersEffect;
+    
 
-	void Awake(){
+    void Awake(){
 		metersEffect = new Dictionary<Creature.CreatureParams, float> () {
 			{ Creature.CreatureParams.joy, joy },
 			{ Creature.CreatureParams.health, health },
 			{ Creature.CreatureParams.hunger, hunger },
-			{ Creature.CreatureParams.generalLove, love }
+            { Creature.CreatureParams.playerOneLove, playerOneLove },
+            { Creature.CreatureParams.playerTwoLove, playerTwoLove },
+            { Creature.CreatureParams.generalLove, love }
 		};
 	}
 
@@ -73,4 +77,29 @@ public class ThingObject : MonoBehaviour
 			health = value;
 		}
 	}
+
+    public float PlayerTwoLove
+    {
+        get
+        {
+            return playerTwoLove;
+        }
+        set
+        {
+            playerTwoLove = value;
+        }
+    }
+
+    public float PlayerOneLove
+    {
+        get
+        {
+            return playerOneLove;
+        }
+        set
+        {
+            playerOneLove = value;
+        }
+    }
+
 }

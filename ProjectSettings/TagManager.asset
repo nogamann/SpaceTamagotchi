@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Finger
+  - moneyError
   layers:
   - Default
   - TransparentFX
@@ -16,7 +16,7 @@ TagManager:
   - 
   - items
   - colliders
-  - 
+  - creature
   - 
   - 
   - 
