@@ -123,6 +123,8 @@ public class TouchControl : NetworkBehaviour
 				local = pc;
 			}
 		}
+		Debug.Assert (gameObject != null);
+		Debug.Assert (local != null);
 		local.GrabItem (gameObject);
 
         Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position));
@@ -151,7 +153,9 @@ public class TouchControl : NetworkBehaviour
         if (hit != null)
         {
             Debug.Log("hit creature");
-            creature.ChooseAction(this.GetComponent<ThingObject>());
+			Debug.Assert (this.GetComponent<ThingObject> () != null);
+//            creature.ChooseAction(this.GetComponent<ThingObject>());
+			creature.ChooseAction(gameObject);
         }
     }
 

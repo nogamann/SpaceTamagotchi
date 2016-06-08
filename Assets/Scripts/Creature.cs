@@ -54,10 +54,18 @@ public class Creature : MonoBehaviour
 	public CreatureParams[] _moods;
 	public CreatureParams[] _actions;
 
+	public CreatureParams[] _foodActions;
+	public CreatureParams[] _gameActions;
+	public CreatureParams[] _medicineActions;
+
 	public Dictionary<CreatureParams, float> metersDictionary;
 	Dictionary<CreatureParams, Formula> formulasDictionary;
 	Dictionary<CreatureParams, Formula> moodsDictionary;
 	Dictionary<CreatureParams, Formula> actionsDictionary;
+
+	Dictionary<CreatureParams, Formula> foodActionsDictionary;
+	Dictionary<CreatureParams, Formula> gameActionsDictionary;
+	Dictionary<CreatureParams, Formula> medicineActionsDictionary;
 
 	public CreatureParams currentMood;
 
@@ -82,22 +90,38 @@ public class Creature : MonoBehaviour
 			}
 		}
 
-		// innit actions dictionary
-		actionsDictionary = new Dictionary<CreatureParams, Formula> ();
+		// innit food actions dictionary
+		foodActionsDictionary = new Dictionary<CreatureParams, Formula> ();
 		foreach (var item in _formulas) {
-			if (Array.Exists<CreatureParams> (_actions, element => element == item.parameter)) {
-				actionsDictionary [item.parameter] = item;
+			if (Array.Exists<CreatureParams> (_foodActions, element => element == item.parameter)) {
+				foodActionsDictionary [item.parameter] = item;
+			}
+		}
+
+		// innit game actions dictionary
+		gameActionsDictionary = new Dictionary<CreatureParams, Formula> ();
+		foreach (var item in _formulas) {
+			if (Array.Exists<CreatureParams> (_gameActions, element => element == item.parameter)) {
+				gameActionsDictionary [item.parameter] = item;
+			}
+		}
+
+		// innit medicine actions dictionary
+		medicineActionsDictionary = new Dictionary<CreatureParams, Formula> ();
+		foreach (var item in _formulas) {
+			if (Array.Exists<CreatureParams> (_medicineActions, element => element == item.parameter)) {
+				medicineActionsDictionary [item.parameter] = item;
 			}
 		}
 
 		// init meters dictionary
 		metersDictionary = new Dictionary<CreatureParams, float> () {
-			{CreatureParams.joy, 0},
-			{CreatureParams.hunger, 0},
-			{CreatureParams.health, 0},
-			{CreatureParams.generalLove, 0},
-			{CreatureParams.playerOneLove, 0},
-			{CreatureParams.playerTwoLove, 0}
+			{CreatureParams.joy, 1},
+			{CreatureParams.hunger, 1},
+			{CreatureParams.health, 1},
+			{CreatureParams.generalLove, 1},
+			{CreatureParams.playerOneLove, 1},
+			{CreatureParams.playerTwoLove, 1}
 		};
 			
 		//burgerItem = new ThingObject() {itemType = ThingObject.ItemType.Food, joy = 1, health = -2, hunger = 5, love = 1};
@@ -108,11 +132,6 @@ public class Creature : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		Debug.Log ("actions in actionsDictionary:");
-		foreach (var action in actionsDictionary) {
-			Debug.Log (action.Key);
-		}
-
         animator = this.GetComponentInChildren<Animator>();
 	}
 
@@ -152,16 +171,32 @@ public class Creature : MonoBehaviour
     /// eat, play or take medicine
     /// </summary>
     /// <param name="thing">food, toy or medicine.</param>
-	public void ChooseAction(ThingObject item)
+//	public void ChooseAction(ThingObject item)
+	public void ChooseAction(GameObject item)
     {
 		Debug.Assert (item != null);
+
+		Dictionary<CreatureParams, Formula> relevantActions = formulasDictionary;
+
+//		switch (item.itemType) {
+		switch (item.GetComponent<ThingObject>().itemType) {
+		case ThingObject.ItemType.Food:
+			relevantActions = foodActionsDictionary;
+			break;
+		case ThingObject.ItemType.Game:
+			relevantActions = gameActionsDictionary;
+			break;
+		case ThingObject.ItemType.Medicine:
+			relevantActions = medicineActionsDictionary;
+			break;
+		}
 
 		// TODO create an idle action to prevent null pointer exception in the rare case no action was chosen
 		CreatureParams chosenAction = CreatureParams.eating;
 		float actionScore = 0.0f;
 
 		// calculate the possible actions' scores according to it's type
-		foreach (CreatureParams action in actionsDictionary.Keys) {
+		foreach (CreatureParams action in relevantActions.Keys) {
 
 			float currentActionScore = GetValue(action, metersDictionary);
 
@@ -174,7 +209,6 @@ public class Creature : MonoBehaviour
 		Debug.Log ("Chosen action is: " + chosenAction);
 
         // perform the chosen action
-
         DoAction(item, chosenAction);
     }
 
@@ -183,17 +217,17 @@ public class Creature : MonoBehaviour
 	/// </summary>
 	/// <param name="item">Item.</param>
 	/// <param name="action">Action.</param>
-	void DoAction(ThingObject item, CreatureParams action)
+//	void DoAction(ThingObject item, CreatureParams action)
+	void DoAction(GameObject item, CreatureParams action)
 	{
 		Debug.Assert (item != null);
-
 		Debug.Log ("Performing action: " + action + " on " + item);
-
 
 
         // update the relevant meters according to the effect of the action
         for (int i = 0; i <= 5; i++) {
-            metersDictionary[(CreatureParams)i] += item.metersEffect[(CreatureParams)i];
+//			metersDictionary[(CreatureParams)i] += item.metersEffect[(CreatureParams)i];
+			metersDictionary[(CreatureParams)i] += item.GetComponent<ThingObject>().metersEffect[(CreatureParams)i];
         }
 
 
@@ -202,13 +236,15 @@ public class Creature : MonoBehaviour
         animator.SetInteger("mood", 0);
 
 
-        if (item.itemType != ThingObject.ItemType.Game)
+//		if (item.itemType != ThingObject.ItemType.Game)
+		if (item.GetComponent<ThingObject>().itemType != ThingObject.ItemType.Game)
         {
             //Debug.Log("item isnt game");
             if (action == CreatureParams.eating || action == CreatureParams.takingMedicine)
             {
                 //Debug.Log("destroy item");
-                Destroy(item.gameObject);
+				Destroy(item);
+
             }
         }
         
