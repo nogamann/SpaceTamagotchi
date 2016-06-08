@@ -247,7 +247,7 @@ public class Creature : MonoBehaviour
             }
            
             // TODO remove
-            Debug.LogError("MOOD is: " + (int)currentMood + currentMood);
+//            Debug.LogError("MOOD is: " + (int)currentMood + currentMood);
 
             // delay the mood calculation
             yield return new WaitForSeconds (updateMoodInterval);
