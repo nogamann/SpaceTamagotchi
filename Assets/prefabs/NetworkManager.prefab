@@ -43,6 +43,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manager: {fileID: 11465326}
   creature: {fileID: 0}
+  showIP: {fileID: 0}
+  loginCanvas: {fileID: 0}
+  canvas: {fileID: 0}
+  friendsIP: {fileID: 0}
   showGUI: 1
   offsetX: 0
   offsetY: 0

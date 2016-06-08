@@ -1,19 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour 
 {
-    public static int money;
-    private float floatMoney;
+    public int money;
+	[SyncVar]
+    public float floatMoney;
     public float moneyEarnedPerSec;
     public Text moneyText;
-
-
-    void Start()
-    {
-
-    }
-
+	//TODO inventory list
+	  
     void FixedUpdate()
     {
         floatMoney += Time.deltaTime * moneyEarnedPerSec;
@@ -21,17 +18,10 @@ public class GameManager : MonoBehaviour
         moneyText.text = money + "$";
     }
 
-    //returns true if the purchase was successful, false otherwise
-    public static bool buyItem(ThingObject thingObject)
-    {
-        if (money >= thingObject.price)
-        {
-            //TODO add lock mechanism
-            money -= thingObject.price;
-            return true;
-        }
-        return false;
-    }
+	public void addObject(GameObject prefab){
+		var go = (GameObject)Instantiate (prefab, transform.position + new Vector3 (2, 2, 0), Quaternion.identity);
+		NetworkServer.Spawn (go);
+	}
 
 }
 

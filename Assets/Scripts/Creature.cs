@@ -99,9 +99,9 @@ public class Creature : MonoBehaviour
 			{CreatureParams.playerTwoLove, 0}
 		};
 			
-		burgerItem = new ThingObject() {itemType = ThingObject.ItemType.Food, joy = 1, health = -2, hunger = 5, love = 1};
-		hamburger = new GameObject ();
-		hamburger.AddComponent (burgerItem);
+//		burgerItem = new ThingObject() {itemType = ThingObject.ItemType.Food, joy = 1, health = -2, hunger = 5, love = 1};
+//		hamburger = new GameObject ();
+//		hamburger.AddComponent (burgerItem);
 	}
 
 	// Use this for initialization
@@ -123,11 +123,11 @@ public class Creature : MonoBehaviour
 		StartCoroutine(CalculateAndUpdateMood ());
 
 		// TODO remove after debug!
-		if (Input.GetKeyDown (KeyCode.C)) {
-			Debug.Log ("'c' is pressed!");
-			Debug.Assert (this.hamburger != null);
-			ChooseAction (this.hamburger);
-		}
+//		if (Input.GetKeyDown (KeyCode.C)) {
+//			Debug.Log ("'c' is pressed!");
+//			Debug.Assert (this.hamburger != null);
+//			ChooseAction (this.hamburger);
+//		}
 	}
 
 	void FixedUpdate()

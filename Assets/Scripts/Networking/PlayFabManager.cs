@@ -26,15 +26,29 @@ public class PlayFabManager : MonoBehaviour {
 	public static event Action OnAddFriendEvent;
 	public static event Action<string> OnUserDataRecievedEvent;
 
+//	void OnGUI(){
+//		if (GUI.Button(new Rect(10, 10, 200, 20), "invite friend"))
+//		{
+//			OnLoginRecievedEvent += OnLoginRecievedInviting;
+//			Login(titleID);
+//		}
+//
+//		if (GUI.Button(new Rect(10, 60, 200, 20), "was invited"))
+//		{
+//			OnLoginRecievedEvent += OnLoginRecievedInvited;
+//			Login(titleID);
+//		}
+//	}
+		
 	void Start(){
 		// first time - inviting
 //		OnLoginRecievedEvent += OnLoginRecievedInviting;
 //		Login(titleID);
 
 //		// first time - invited
-		OnLoginRecievedEvent += OnLoginRecievedInvited;
-		Login(titleID);
-//
+//		OnLoginRecievedEvent += OnLoginRecievedInvited;
+//		Login(titleID);
+////
 //		// not first time
 //		OnLoginRecievedEvent += OnLoginRecieved;
 //		Login (titleID);
@@ -59,7 +73,7 @@ public class PlayFabManager : MonoBehaviour {
 			
 		// not the first time
 		// read friendsplayfabid from playfab TODO
-		friendsPlayFabId = "827019C949ED0449";
+		friendsPlayFabId = "B5F1B3A8FD95A4C5";
 		mySharedGroupId = myPlayFabId + friendsPlayFabId;
 
 		// check if other player is connected ('playfabid+connected' true)
@@ -278,6 +292,7 @@ public class PlayFabManager : MonoBehaviour {
 		OnLoginRecievedEvent -= OnLoginRecievedInviting;
 
 		// print code
+		Debug.Log("myPlayFabId: " + myPlayFabId);
 
 		// waiting for friend to enter code
 		OnEnterCodeEvent += OnEnterCode;
@@ -288,7 +303,7 @@ public class PlayFabManager : MonoBehaviour {
 		OnLoginRecievedEvent -= OnLoginRecievedInvited;
 
 		// enter code TODO
-		friendsPlayFabId = "827019C949ED0449";
+		friendsPlayFabId = "B5F1B3A8FD95A4C5";
 		if (OnEnterCodeEvent != null) {
 			OnEnterCode ();
 		}
@@ -303,7 +318,7 @@ public class PlayFabManager : MonoBehaviour {
 		OnEnterCodeEvent -= OnEnterCode;
 
 		//TODO delete
-		friendsPlayFabId = "827019C949ED0449";
+		friendsPlayFabId = "D2F66F6D4B4534B1";
 
 		mySharedGroupId = myPlayFabId + friendsPlayFabId;
 

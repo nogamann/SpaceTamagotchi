@@ -11,8 +11,11 @@ GameObject:
   - 212: {fileID: 21242052}
   - 60: {fileID: 6099348}
   - 114: {fileID: 11472844}
-  - 114: {fileID: 11447036}
-  m_Layer: 8
+  - 114: {fileID: 11466044}
+  - 114: {fileID: 11457800}
+  - 114: {fileID: 11452672}
+  - 114: {fileID: 11428544}
+  m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,8 +29,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 60.71034, y: -99, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: 3, y: 3, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 8.223551}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -51,7 +54,7 @@ PolygonCollider2D:
       - {x: 0.058978718, y: -0.04248217}
       - {x: 0.057226963, y: 0.04897867}
       - {x: 0.033978753, y: 0.06073055}
---- !u!114 &11447036
+--- !u!114 &11428544
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -62,14 +65,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefc685df30825e478c1990b8e3ab567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  metersEffect: 00000000010000000200000003000000
   health: 0
   love: 0
   hunger: 0
   joy: 0
-  price: 10
+  price: 2
   attractiveness: 0
   itemType: 0
+--- !u!114 &11452672
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &11457800
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 188
+    i1: 76
+    i2: 101
+    i3: 196
+    i4: 36
+    i5: 208
+    i6: 89
+    i7: 132
+    i8: 25
+    i9: 254
+    i10: 209
+    i11: 42
+    i12: 76
+    i13: 9
+    i14: 131
+    i15: 251
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
+--- !u!114 &11466044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
+  delegates: []
 --- !u!114 &11472844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -82,7 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  lowerBoundOfMovement: {fileID: 0}
 --- !u!212 &21242052
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -119,7 +185,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: price
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 158432}
