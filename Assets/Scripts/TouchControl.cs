@@ -112,7 +112,7 @@ public class TouchControl : MonoBehaviour
     {
         Debug.Log("touch down");
         Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position));
-        if (hit == this.GetComponent<Collider2D>())
+        if (hit != null && hit == this.GetComponent<Collider2D>())
         {
             offset = (this.transform.position - mainCamera.ScreenToWorldPoint(obj.position));
             isDragged = true;
