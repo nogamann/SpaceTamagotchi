@@ -15,15 +15,28 @@ public class BuyItemButton : MonoBehaviour {
 
 	public void TryToBuy()
     {
-        if (GameManager.buyItem(itemPrefab.GetComponent<ThingObject>()))
-        {
-            Instantiate(itemPrefab, new Vector3(5f,-4f,0), Quaternion.identity);
-        }
-        else
-        {
-            Debug.Log("not enough money!");
-            transform.Find("DontHaveEnoughMoneyError").gameObject.SetActive(true);
-        }
-    }
+		
+//		Instantiate(itemPrefab, new Vector3(5f,-4f,0), Quaternion.identity);
+		GameObject[] objects = GameObject.FindGameObjectsWithTag("Finger");
+		PlayerController local = null;
+		foreach (GameObject go in objects) {
+			PlayerController pc = go.GetComponent<PlayerController> ();
+			if (pc.isLocalPlayer) {
+				local = pc;
+			}
+		}
+		int price = itemPrefab.GetComponent<ThingObject> ().price;
+		local.BuyItem (price);
 
+
+//        if (GameManager.buyItem(itemPrefab.GetComponent<ThingObject>()))
+//        {
+//            Instantiate(itemPrefab, new Vector3(5f,-4f,0), Quaternion.identity);
+//        }
+//        else
+//        {
+//            Debug.Log("not enough money!");
+//            transform.Find("DontHaveEnoughMoneyError").gameObject.SetActive(true);
+//        }
+    }
 }

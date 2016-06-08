@@ -2,8 +2,9 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using System;
+using UnityEngine.Networking;
 
-public class TouchControl : MonoBehaviour
+public class TouchControl : NetworkBehaviour
 {
 
     private bool isDragged;
@@ -14,8 +15,8 @@ public class TouchControl : MonoBehaviour
     Touch draggingTouch;
     Vector3 touchPosition;
     public Camera mainCamera;
+
     Creature creature;
-    
 
 
     //TODO change to in enabled
@@ -24,6 +25,8 @@ public class TouchControl : MonoBehaviour
         GameInputCapture.OnTouchDown += this.OnTouchDown;
         GameInputCapture.OnTouchDrag += this.OnTouchDrag;
         GameInputCapture.OnTouchUp += this.OnTouchUp;
+
+		mainCamera = FindObjectOfType<Camera>();
     }
 
 
@@ -101,16 +104,27 @@ public class TouchControl : MonoBehaviour
 
     private void OnTouchDrag(PointerEventData obj)
     {
-        if (isDragged)
+		if (isDragged & hasAuthority)
         {
             Vector3 touchWorldPos = mainCamera.ScreenToWorldPoint(obj.position);
+
             this.transform.position = touchWorldPos + offset;
+
         }
     }
 
     private void OnTouchDown(PointerEventData obj)
     {
-        Debug.Log("touch down");
+		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Finger");
+		PlayerController local = null;
+		foreach (GameObject go in objects){
+			PlayerController pc = go.GetComponent<PlayerController>();
+			if (pc.isLocalPlayer) {
+				local = pc;
+			}
+		}
+		local.GrabItem (gameObject);
+
         Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position));
         if (hit != null && hit == this.GetComponent<Collider2D>())
         {
@@ -122,6 +136,15 @@ public class TouchControl : MonoBehaviour
 
     private void OnTouchUp(PointerEventData obj)
     {
+		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Finger");
+		PlayerController local = null;
+		foreach (GameObject go in objects){
+			PlayerController pc = go.GetComponent<PlayerController>();
+			if (pc.isLocalPlayer) {
+				local = pc;
+			}
+		}
+ 		local.FreeItem (gameObject);
         isDragged = false;
         int creatureLayer = LayerMask.GetMask("creature");
         Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position), creatureLayer);
@@ -133,4 +156,3 @@ public class TouchControl : MonoBehaviour
     }
 
 }
-

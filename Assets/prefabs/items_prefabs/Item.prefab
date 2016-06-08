@@ -12,6 +12,8 @@ GameObject:
   - 114: {fileID: 11472844}
   - 114: {fileID: 11447036}
   - 60: {fileID: 6057996}
+  - 114: {fileID: 11473894}
+  - 114: {fileID: 11432016}
   m_Layer: 8
   m_Name: Item
   m_TagString: Untagged
@@ -73,6 +75,26 @@ PolygonCollider2D:
       - {x: 0.7, y: -0.35}
       - {x: 0.82, y: -0.19999999}
       - {x: 0.90999997, y: -0.099999994}
+--- !u!114 &11432016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &11447036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -84,11 +106,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefc685df30825e478c1990b8e3ab567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  metersEffect: 00000000010000000200000003000000
   health: 0
   love: 0
   hunger: 0
   joy: 0
+  playerOneLove: 0
+  playerTwoLove: 0
   price: 10
   attractiveness: 0
   itemType: 0
@@ -104,6 +127,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
+--- !u!114 &11473894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 188
+    i1: 76
+    i2: 101
+    i3: 196
+    i4: 36
+    i5: 208
+    i6: 89
+    i7: 132
+    i8: 25
+    i9: 254
+    i10: 209
+    i11: 42
+    i12: 76
+    i13: 9
+    i14: 131
+    i15: 251
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!212 &21242052
 SpriteRenderer:
   m_ObjectHideFlags: 1
