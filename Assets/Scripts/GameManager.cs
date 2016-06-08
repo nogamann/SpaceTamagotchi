@@ -31,6 +31,7 @@ public class GameManager : NetworkBehaviour
 
 	public void addObject(){
 		var go = (GameObject) Instantiate (prefab, transform.position + new Vector3 (2, 2, 0), Quaternion.identity);
+//		var go = Instantiate (prefab, transform.position + new Vector3 (2, 2, 0), Quaternion.identity);
 		NetworkServer.Spawn (go);
 	}
 }

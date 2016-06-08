@@ -116,12 +116,12 @@ public class Creature : MonoBehaviour
 
 		// init meters dictionary
 		metersDictionary = new Dictionary<CreatureParams, float> () {
-			{CreatureParams.joy, 0},
-			{CreatureParams.hunger, 0},
-			{CreatureParams.health, 0},
-			{CreatureParams.generalLove, 0},
-			{CreatureParams.playerOneLove, 0},
-			{CreatureParams.playerTwoLove, 0}
+			{CreatureParams.joy, 1},
+			{CreatureParams.hunger, 1},
+			{CreatureParams.health, 1},
+			{CreatureParams.generalLove, 1},
+			{CreatureParams.playerOneLove, 1},
+			{CreatureParams.playerTwoLove, 1}
 		};
 			
 		//burgerItem = new ThingObject() {itemType = ThingObject.ItemType.Food, joy = 1, health = -2, hunger = 5, love = 1};
@@ -171,13 +171,15 @@ public class Creature : MonoBehaviour
     /// eat, play or take medicine
     /// </summary>
     /// <param name="thing">food, toy or medicine.</param>
-	public void ChooseAction(ThingObject item)
+//	public void ChooseAction(ThingObject item)
+	public void ChooseAction(GameObject item)
     {
 		Debug.Assert (item != null);
 
 		Dictionary<CreatureParams, Formula> relevantActions = formulasDictionary;
 
-		switch (item.itemType) {
+//		switch (item.itemType) {
+		switch (item.GetComponent<ThingObject>().itemType) {
 		case ThingObject.ItemType.Food:
 			relevantActions = foodActionsDictionary;
 			break;
@@ -215,7 +217,8 @@ public class Creature : MonoBehaviour
 	/// </summary>
 	/// <param name="item">Item.</param>
 	/// <param name="action">Action.</param>
-	void DoAction(ThingObject item, CreatureParams action)
+//	void DoAction(ThingObject item, CreatureParams action)
+	void DoAction(GameObject item, CreatureParams action)
 	{
 		Debug.Assert (item != null);
 		Debug.Log ("Performing action: " + action + " on " + item);
@@ -223,7 +226,8 @@ public class Creature : MonoBehaviour
 
         // update the relevant meters according to the effect of the action
         for (int i = 0; i <= 5; i++) {
-            metersDictionary[(CreatureParams)i] += item.metersEffect[(CreatureParams)i];
+//			metersDictionary[(CreatureParams)i] += item.metersEffect[(CreatureParams)i];
+			metersDictionary[(CreatureParams)i] += item.GetComponent<ThingObject>().metersEffect[(CreatureParams)i];
         }
 
 
@@ -232,13 +236,15 @@ public class Creature : MonoBehaviour
         animator.SetInteger("mood", 0);
 
 
-        if (item.itemType != ThingObject.ItemType.Game)
+//		if (item.itemType != ThingObject.ItemType.Game)
+		if (item.GetComponent<ThingObject>().itemType != ThingObject.ItemType.Game)
         {
             //Debug.Log("item isnt game");
             if (action == CreatureParams.eating || action == CreatureParams.takingMedicine)
             {
                 //Debug.Log("destroy item");
-                Destroy(item.gameObject);
+				Destroy(item);
+
             }
         }
         
