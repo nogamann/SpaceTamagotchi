@@ -54,10 +54,18 @@ public class Creature : MonoBehaviour
 	public CreatureParams[] _moods;
 	public CreatureParams[] _actions;
 
+	public CreatureParams[] _foodActions;
+	public CreatureParams[] _gameActions;
+	public CreatureParams[] _medicineActions;
+
 	public Dictionary<CreatureParams, float> metersDictionary;
 	Dictionary<CreatureParams, Formula> formulasDictionary;
 	Dictionary<CreatureParams, Formula> moodsDictionary;
 	Dictionary<CreatureParams, Formula> actionsDictionary;
+
+	Dictionary<CreatureParams, Formula> foodActionsDictionary;
+	Dictionary<CreatureParams, Formula> gameActionsDictionary;
+	Dictionary<CreatureParams, Formula> medicineActionsDictionary;
 
 	public CreatureParams currentMood;
 
@@ -82,11 +90,27 @@ public class Creature : MonoBehaviour
 			}
 		}
 
-		// innit actions dictionary
-		actionsDictionary = new Dictionary<CreatureParams, Formula> ();
+		// innit food actions dictionary
+		foodActionsDictionary = new Dictionary<CreatureParams, Formula> ();
 		foreach (var item in _formulas) {
-			if (Array.Exists<CreatureParams> (_actions, element => element == item.parameter)) {
-				actionsDictionary [item.parameter] = item;
+			if (Array.Exists<CreatureParams> (_foodActions, element => element == item.parameter)) {
+				foodActionsDictionary [item.parameter] = item;
+			}
+		}
+
+		// innit game actions dictionary
+		gameActionsDictionary = new Dictionary<CreatureParams, Formula> ();
+		foreach (var item in _formulas) {
+			if (Array.Exists<CreatureParams> (_gameActions, element => element == item.parameter)) {
+				gameActionsDictionary [item.parameter] = item;
+			}
+		}
+
+		// innit medicine actions dictionary
+		medicineActionsDictionary = new Dictionary<CreatureParams, Formula> ();
+		foreach (var item in _formulas) {
+			if (Array.Exists<CreatureParams> (_medicineActions, element => element == item.parameter)) {
+				medicineActionsDictionary [item.parameter] = item;
 			}
 		}
 
@@ -108,11 +132,6 @@ public class Creature : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		Debug.Log ("actions in actionsDictionary:");
-		foreach (var action in actionsDictionary) {
-			Debug.Log (action.Key);
-		}
-
         animator = this.GetComponentInChildren<Animator>();
 	}
 
@@ -156,12 +175,26 @@ public class Creature : MonoBehaviour
     {
 		Debug.Assert (item != null);
 
+		Dictionary<CreatureParams, Formula> relevantActions = formulasDictionary;
+
+		switch (item.itemType) {
+		case ThingObject.ItemType.Food:
+			relevantActions = foodActionsDictionary;
+			break;
+		case ThingObject.ItemType.Game:
+			relevantActions = gameActionsDictionary;
+			break;
+		case ThingObject.ItemType.Medicine:
+			relevantActions = medicineActionsDictionary;
+			break;
+		}
+
 		// TODO create an idle action to prevent null pointer exception in the rare case no action was chosen
 		CreatureParams chosenAction = CreatureParams.eating;
 		float actionScore = 0.0f;
 
 		// calculate the possible actions' scores according to it's type
-		foreach (CreatureParams action in actionsDictionary.Keys) {
+		foreach (CreatureParams action in relevantActions.Keys) {
 
 			float currentActionScore = GetValue(action, metersDictionary);
 
