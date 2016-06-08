@@ -10,7 +10,7 @@ public class Store : MonoBehaviour
     {
         //the "content" component of a single store scrollbar
         public GameObject storeContent;
-		public string[] items;
+		public GameObject[] items;
     }
 
     public GameObject storeButtonPrefab;
@@ -21,12 +21,13 @@ public class Store : MonoBehaviour
         foreach (ItemsList itemsList in Stores)
             {
             int itemIndex = 0;
-			foreach (string item in itemsList.items)
+			foreach (GameObject item in itemsList.items)
             {
                 Transform storeButton = itemsList.storeContent.transform.GetChild(itemIndex);
                 if (storeButton != null)
                 {
-                    //TODO images for store buttons
+					storeButton.GetComponent<Image> ().sprite = item.GetComponent<SpriteRenderer> ().sprite;
+					//TODO images for store buttons
                 }
                 itemIndex ++;
             }

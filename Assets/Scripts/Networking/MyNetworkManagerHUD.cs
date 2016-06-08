@@ -72,12 +72,14 @@ namespace UnityEngine.Networking
 		public void host(){
 			manager.StartHost();
 			loginCanvas.enabled = false;
+			Debug.Log ("connected as host");
 			canvas.enabled = true;
 		}
 
 		public void client(){
 			manager.networkAddress = friendsIP.text;
 			manager.StartClient();
+			Debug.Log ("connected as client");
 			loginCanvas.enabled = false;
 			canvas.enabled = true;
 		}
@@ -93,17 +95,17 @@ namespace UnityEngine.Networking
 				return;
 
 			string ip = Network.player.ipAddress;
-			showIP.text = "Tell your friend to enter: " + ip + " and click";
+			showIP.text = "Tell your friend to enter: " + ip + " and click here";
 
 			if (!NetworkClient.active && !NetworkServer.active && manager.matchMaker == null)
 			{
-//				if (GUI.Button(new Rect(280, 90, 100, 20), "host"))
-//				{
-//					
-//					manager.StartHost();
-//					loginCanvas.enabled = false;
-//					canvas.enabled = true;
-//				}
+				if (GUI.Button(new Rect(280, 90, 100, 20), "host"))
+				{
+					
+					manager.StartHost();
+					loginCanvas.enabled = false;
+					canvas.enabled = true;
+				}
 //				ypos += spacing;
 //
 //				if (GUI.Button(new Rect(280, 180, 105, 20), "Client"))

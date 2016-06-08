@@ -45,32 +45,23 @@ public class PlayerController : NetworkBehaviour {
 	}
 		
 	// returns true if the purchase was successful, false otherwise
-	public bool BuyItem(GameObject item)
+	public bool BuyItem(int price)
 	{
-		Debug.Log ("buy item");
 		float beforeMoney = gameManager.floatMoney;
-		int price = item.GetComponent<ThingObject> ().price;
-		CmdBuy (item);
+		CmdBuy (price);
 		// TODO improve
 		return (gameManager.floatMoney - beforeMoney == price);  
 	}
 
 	[Command]
-	void CmdBuy(GameObject item){
-//		gameManager.GetComponent<NetworkIdentity> ().AssignClientAuthority (connectionToClient);
-
-		int price = item.GetComponent<ThingObject> ().price;
-		Debug.Log ("in cmd");
+	void CmdBuy(int price){
 
 		if (gameManager.floatMoney - price >= 0) { 
 			// subtract money
-			gameManager.floatMoney -= price; 	
-			Debug.Log ("bought");
+			gameManager.decreaseMoney(price); 	
 
 			// add to inventory
-			gameManager.addObject(item);
+			gameManager.addObject();
 		}
-//		gameManager.GetComponent<NetworkIdentity> ().RemoveClientAuthority (connectionToClient);
-
 	}
 }
