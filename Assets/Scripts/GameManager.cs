@@ -56,7 +56,7 @@ public class GameManager : NetworkBehaviour
 
 	public void addObject(ThingObject.SpecificItemType type)
     {
-		var go = (GameObject)Instantiate (itemsPrefabsDictionary[type], transform.position + new Vector3 (2, 2, 0), Quaternion.identity);
+		var go = (GameObject)Instantiate (itemsPrefabsDictionary[type], transform.position + new Vector3 (3, 2, 0), Quaternion.identity);
 		NetworkServer.Spawn (go);
 	}
 }

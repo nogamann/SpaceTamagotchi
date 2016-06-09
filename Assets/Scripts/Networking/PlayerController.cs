@@ -48,7 +48,7 @@ public class PlayerController : NetworkBehaviour {
 	public bool BuyItem(int price, ThingObject.SpecificItemType type)
 	{
 		float beforeMoney = gameManager.floatMoney;
-		CmdBuy (price);
+		CmdBuy (price, type);
 		// TODO improve
 		return (gameManager.floatMoney - beforeMoney == price);  
 	}

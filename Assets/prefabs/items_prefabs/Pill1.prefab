@@ -12,6 +12,8 @@ GameObject:
   - 114: {fileID: 11490572}
   - 114: {fileID: 11471910}
   - 60: {fileID: 6058890}
+  - 114: {fileID: 11405730}
+  - 114: {fileID: 11442002}
   m_Layer: 8
   m_Name: Pill1
   m_TagString: Untagged
@@ -59,6 +61,58 @@ PolygonCollider2D:
       - {x: 0.14999999, y: -0.39999998}
       - {x: 0.32, y: -0.26}
       - {x: 0.39, y: -0.089999996}
+--- !u!114 &11405730
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 87
+    i1: 225
+    i2: 63
+    i3: 157
+    i4: 119
+    i5: 72
+    i6: 72
+    i7: 132
+    i8: 24
+    i9: 15
+    i10: 182
+    i11: 248
+    i12: 208
+    i13: 180
+    i14: 39
+    i15: 227
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
+--- !u!114 &11442002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &11471910
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,6 +133,7 @@ MonoBehaviour:
   price: 5
   attractiveness: 0
   itemType: 2
+  specificTypeItem: 4
 --- !u!114 &11490572
 MonoBehaviour:
   m_ObjectHideFlags: 1

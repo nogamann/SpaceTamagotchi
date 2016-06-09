@@ -10,6 +10,7 @@ public class BuyItemButton : MonoBehaviour {
     void Start()
     {
         this.GetComponent<Image>().sprite = itemPrefab.GetComponent<SpriteRenderer>().sprite;
+		Debug.Log ("sprite on button");
         this.GetComponentInChildren<Text>().text = itemPrefab.GetComponent<ThingObject>().price + "$";
     }
 

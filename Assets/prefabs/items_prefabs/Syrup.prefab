@@ -12,6 +12,8 @@ GameObject:
   - 114: {fileID: 11450944}
   - 114: {fileID: 11416266}
   - 60: {fileID: 6080714}
+  - 114: {fileID: 11400436}
+  - 114: {fileID: 11446968}
   m_Layer: 8
   m_Name: Syrup
   m_TagString: Untagged
@@ -53,6 +55,38 @@ PolygonCollider2D:
       - {x: 0.31, y: -0.53}
       - {x: 0.31, y: 0.32999998}
       - {x: 0.17, y: 0.61}
+--- !u!114 &11400436
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 247
+    i1: 35
+    i2: 87
+    i3: 200
+    i4: 132
+    i5: 113
+    i6: 175
+    i7: 148
+    i8: 106
+    i9: 215
+    i10: 108
+    i11: 8
+    i12: 30
+    i13: 140
+    i14: 22
+    i15: 192
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &11416266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,6 +107,27 @@ MonoBehaviour:
   price: 15
   attractiveness: 0
   itemType: 2
+  specificTypeItem: 6
+--- !u!114 &11446968
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &11450944
 MonoBehaviour:
   m_ObjectHideFlags: 1

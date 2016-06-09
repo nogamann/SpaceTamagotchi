@@ -15,7 +15,7 @@ GameObject:
   - 114: {fileID: 11473894}
   - 114: {fileID: 11432016}
   m_Layer: 8
-  m_Name: sandwich
+  m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

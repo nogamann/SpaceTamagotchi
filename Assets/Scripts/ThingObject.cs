@@ -25,7 +25,9 @@ public class ThingObject : MonoBehaviour
         Injection,
         Ball,
         Yoyo,
-        tranpoline
+        tranpoline,
+		cardboard
+	
     }
 
 

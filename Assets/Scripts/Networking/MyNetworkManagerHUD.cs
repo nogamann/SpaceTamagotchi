@@ -13,7 +13,7 @@ namespace UnityEngine.Networking
 		public Text showIP;
 		public Canvas loginCanvas;
 		public Canvas canvas;
-		public Sprite egg;
+		public GameObject egg;
 		public InputField friendsIP;
 		[SerializeField] public bool showGUI = true;
 		[SerializeField] public int offsetX;
@@ -28,6 +28,7 @@ namespace UnityEngine.Networking
 		}
 
 		void Start(){
+			canvas.enabled = false;
 			
 		}
 
@@ -75,6 +76,7 @@ namespace UnityEngine.Networking
 			loginCanvas.enabled = false;
 			Debug.Log ("connected as host");
 			canvas.enabled = true;
+			Destroy (egg);
 		}
 
 		public void client(){
@@ -83,6 +85,8 @@ namespace UnityEngine.Networking
 			Debug.Log ("connected as client");
 			loginCanvas.enabled = false;
 			canvas.enabled = true;
+			Destroy (egg);
+
 		}
 
 		void OnGUI()

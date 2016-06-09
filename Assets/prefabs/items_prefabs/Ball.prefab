@@ -12,6 +12,8 @@ GameObject:
   - 114: {fileID: 11436764}
   - 114: {fileID: 11498944}
   - 60: {fileID: 6063166}
+  - 114: {fileID: 11481494}
+  - 114: {fileID: 11408058}
   m_Layer: 8
   m_Name: Ball
   m_TagString: Untagged
@@ -61,6 +63,26 @@ PolygonCollider2D:
       - {x: 0.31, y: -0.48}
       - {x: 0.39999998, y: -0.39999998}
       - {x: 0.45, y: -0.34}
+--- !u!114 &11408058
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &11436764
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,6 +95,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
+--- !u!114 &11481494
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 70
+    i1: 191
+    i2: 209
+    i3: 194
+    i4: 158
+    i5: 171
+    i6: 233
+    i7: 116
+    i8: 74
+    i9: 114
+    i10: 230
+    i11: 239
+    i12: 75
+    i13: 184
+    i14: 197
+    i15: 174
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &11498944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -93,6 +147,7 @@ MonoBehaviour:
   price: 20
   attractiveness: 0
   itemType: 1
+  specificTypeItem: 8
 --- !u!212 &21221648
 SpriteRenderer:
   m_ObjectHideFlags: 1

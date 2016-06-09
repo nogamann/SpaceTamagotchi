@@ -12,6 +12,8 @@ GameObject:
   - 114: {fileID: 11441644}
   - 114: {fileID: 11456928}
   - 60: {fileID: 6006520}
+  - 114: {fileID: 11417798}
+  - 114: {fileID: 11492958}
   m_Layer: 8
   m_Name: yoyo
   m_TagString: Untagged
@@ -84,6 +86,38 @@ PolygonCollider2D:
       - {x: -0.81, y: -0.45999998}
       - {x: -0.62, y: -0.37}
       - {x: -0.56, y: -0.44}
+--- !u!114 &11417798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 144636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 71
+    i1: 32
+    i2: 198
+    i3: 44
+    i4: 19
+    i5: 81
+    i6: 44
+    i7: 228
+    i8: 138
+    i9: 224
+    i10: 94
+    i11: 63
+    i12: 33
+    i13: 45
+    i14: 87
+    i15: 215
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &11441644
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -116,6 +150,27 @@ MonoBehaviour:
   price: 10
   attractiveness: 0
   itemType: 1
+  specificTypeItem: 9
+--- !u!114 &11492958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 144636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!212 &21231038
 SpriteRenderer:
   m_ObjectHideFlags: 1

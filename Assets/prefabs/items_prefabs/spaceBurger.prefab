@@ -132,6 +132,7 @@ MonoBehaviour:
   price: 20
   attractiveness: 10
   itemType: 0
+  specificTypeItem: 1
 --- !u!114 &11444948
 MonoBehaviour:
   m_ObjectHideFlags: 1

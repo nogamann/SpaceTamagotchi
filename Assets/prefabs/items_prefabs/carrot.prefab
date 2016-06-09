@@ -141,6 +141,7 @@ MonoBehaviour:
   price: 5
   attractiveness: 1
   itemType: 0
+  specificTypeItem: 3
 --- !u!212 &21284608
 SpriteRenderer:
   m_ObjectHideFlags: 1
