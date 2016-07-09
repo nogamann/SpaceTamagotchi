@@ -9,11 +9,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 479380}
   - 212: {fileID: 21213728}
-  - 114: {fileID: 11436500}
   - 114: {fileID: 11428306}
   - 60: {fileID: 6093890}
   - 114: {fileID: 11459114}
   - 114: {fileID: 11439346}
+  - 114: {fileID: 11478824}
   m_Layer: 8
   m_Name: sandwich
   m_TagString: Untagged
@@ -95,18 +95,7 @@ MonoBehaviour:
   price: 10
   attractiveness: 7
   itemType: 0
---- !u!114 &11436500
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 168328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24e4c9cc03cba4b4fb9a5154a9df566b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
+  specificTypeItem: 0
 --- !u!114 &11439346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,6 +148,18 @@ MonoBehaviour:
     i15: 142
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &11478824
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 168328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e4c9cc03cba4b4fb9a5154a9df566b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
 --- !u!212 &21213728
 SpriteRenderer:
   m_ObjectHideFlags: 1

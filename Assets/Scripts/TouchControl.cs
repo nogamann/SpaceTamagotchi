@@ -148,6 +148,7 @@ public class TouchControl : NetworkBehaviour
 		}
  		local.FreeItem (gameObject);
         isDragged = false;
+
         int creatureLayer = LayerMask.GetMask("creature");
         Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position), creatureLayer);
         if (hit != null)

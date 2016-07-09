@@ -9,11 +9,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 431972}
   - 212: {fileID: 21284608}
-  - 114: {fileID: 11433092}
   - 114: {fileID: 11490232}
   - 60: {fileID: 6054124}
   - 114: {fileID: 11426480}
   - 114: {fileID: 11410594}
+  - 114: {fileID: 11436752}
   m_Layer: 8
   m_Name: carrot
   m_TagString: Untagged
@@ -109,7 +109,7 @@ MonoBehaviour:
     i15: 96
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &11433092
+--- !u!114 &11436752
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0.2
   love: -0.1
-  hunger: 0.3
+  hunger: 0.2
   joy: 0
   playerOneLove: 0
   playerTwoLove: 0
@@ -178,7 +178,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: hunger
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 163142}

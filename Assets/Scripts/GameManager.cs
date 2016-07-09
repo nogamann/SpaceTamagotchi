@@ -8,23 +8,22 @@ using System;
 public class GameManager : NetworkBehaviour 
 {
     public int money;
+	public GameObject creature;
+
 	[SyncVar]
     public float floatMoney;
     public float moneyEarnedPerSec;
     public Text moneyText;
-	
 
     [Serializable]
     public class ItemsPrefabs{
         public ThingObject.SpecificItemType specificItemType;
         public GameObject itemPrefab;
-    
     }
 
     public ItemsPrefabs[] itemsPrefabs;
 
     public Dictionary<ThingObject.SpecificItemType, GameObject> itemsPrefabsDictionary = new Dictionary<ThingObject.SpecificItemType, GameObject>();
-
 
     void Start()
     {
@@ -56,8 +55,10 @@ public class GameManager : NetworkBehaviour
 
 	public void addObject(ThingObject.SpecificItemType type)
     {
-		var go = (GameObject)Instantiate (itemsPrefabsDictionary[type], transform.position + new Vector3 (3, 2, 0), Quaternion.identity);
+		Vector3 position = new Vector3 (5, UnityEngine.Random.Range(-3,3), 0);
+		Debug.Log (position.ToString ());
+		var go = (GameObject)Instantiate (itemsPrefabsDictionary[type], position, Quaternion.identity);
 		NetworkServer.Spawn (go);
 	}
-}
 
+}

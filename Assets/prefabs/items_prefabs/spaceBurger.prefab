@@ -123,10 +123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefc685df30825e478c1990b8e3ab567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: -0.5
-  love: 0.3
+  health: -0.4
+  love: 0.2
   hunger: 0.3
-  joy: 0.3
+  joy: 0.1
   playerOneLove: 0
   playerTwoLove: 0
   price: 20
@@ -213,7 +213,19 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: health
+      value: -0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: love
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: joy
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 196136}
