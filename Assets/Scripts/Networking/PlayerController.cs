@@ -45,23 +45,24 @@ public class PlayerController : NetworkBehaviour {
 	}
 		
 	// returns true if the purchase was successful, false otherwise
-	public bool BuyItem(int price)
+	public bool BuyItem(int price, ThingObject.SpecificItemType type)
 	{
 		float beforeMoney = gameManager.floatMoney;
-		CmdBuy (price);
+		CmdBuy (price, type);
 		// TODO improve
 		return (gameManager.floatMoney - beforeMoney == price);  
 	}
 
 	[Command]
-	void CmdBuy(int price){
+	void CmdBuy(int price, ThingObject.SpecificItemType type)
+    {
 
 		if (gameManager.floatMoney - price >= 0) { 
 			// subtract money
 			gameManager.decreaseMoney(price); 	
 
 			// add to inventory
-			gameManager.addObject();
+			gameManager.addObject(type);
 		}
 	}
 }

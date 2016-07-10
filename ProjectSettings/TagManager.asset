@@ -6,6 +6,8 @@ TagManager:
   tags:
   - moneyError
   - Finger
+  - Egg
+  - Bar
   layers:
   - Default
   - TransparentFX
@@ -15,10 +17,10 @@ TagManager:
   - UI
   - 
   - 
-  - items
-  - colliders
   - creature
+  - colliders
   - 
+  - items
   - 
   - 
   - 

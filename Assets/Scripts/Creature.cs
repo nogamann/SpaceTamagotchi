@@ -32,7 +32,17 @@ public class Creature : MonoBehaviour
 		loving = 18,
 		notWanting = 19,
 		blinking = 20,
-		takingMedicine = 21
+		takingMedicine = 21,
+		one = 22,
+		joyComplement = 23,
+		healthComplement = 24,
+		hungerComplement = 25,
+		generalLoveComplement = 26,
+		playerOneLoveComplement = 27,
+		playerTwoLoveComplement = 28,
+		notWantingToPlay = 29,
+		notWantingToEat = 30,
+		notWantingToTakeMed = 31
     }
 
     // TODO: should be updated everytime love changes
@@ -116,12 +126,13 @@ public class Creature : MonoBehaviour
 
 		// init meters dictionary
 		metersDictionary = new Dictionary<CreatureParams, float> () {
-			{CreatureParams.joy, 0},
-			{CreatureParams.hunger, 0},
-			{CreatureParams.health, 0},
-			{CreatureParams.generalLove, 0},
-			{CreatureParams.playerOneLove, 0},
-			{CreatureParams.playerTwoLove, 0}
+			{CreatureParams.joy, 0.8f},
+			{CreatureParams.hunger, 0.8f},
+			{CreatureParams.health, 0.8f},
+			{CreatureParams.generalLove, 0.8f},
+			{CreatureParams.playerOneLove, 0.8f},
+			{CreatureParams.playerTwoLove, 0.8f},
+			{CreatureParams.one, 1}
 		};
 			
 		//burgerItem = new ThingObject() {itemType = ThingObject.ItemType.Food, joy = 1, health = -2, hunger = 5, love = 1};
@@ -171,12 +182,20 @@ public class Creature : MonoBehaviour
     /// eat, play or take medicine
     /// </summary>
     /// <param name="thing">food, toy or medicine.</param>
+<<<<<<< HEAD
+=======
+//	public void ChooseAction(ThingObject item)
+>>>>>>> b4b9f7d494c638cab68de4c364eb5bc5f492b78f
 	public void ChooseAction(GameObject item)
     {
 		Debug.Assert (item != null);
 
 		Dictionary<CreatureParams, Formula> relevantActions = formulasDictionary;
 
+<<<<<<< HEAD
+=======
+//		switch (item.itemType) {
+>>>>>>> b4b9f7d494c638cab68de4c364eb5bc5f492b78f
 		switch (item.GetComponent<ThingObject>().itemType) {
 		case ThingObject.ItemType.Food:
 			relevantActions = foodActionsDictionary;
@@ -189,15 +208,14 @@ public class Creature : MonoBehaviour
 			break;
 		}
 
+
 		// TODO create an idle action to prevent null pointer exception in the rare case no action was chosen
 		CreatureParams chosenAction = CreatureParams.eating;
 		float actionScore = 0.0f;
 
 		// calculate the possible actions' scores according to it's type
 		foreach (CreatureParams action in relevantActions.Keys) {
-
 			float currentActionScore = GetValue(action, metersDictionary);
-
 			if (currentActionScore > actionScore) {
 				actionScore = currentActionScore;
 				chosenAction = action;
@@ -215,6 +233,7 @@ public class Creature : MonoBehaviour
 	/// </summary>
 	/// <param name="item">Item.</param>
 	/// <param name="action">Action.</param>
+<<<<<<< HEAD
 	void DoAction(GameObject item, CreatureParams action)
 	{
 		Debug.Assert (item != null);
@@ -224,13 +243,58 @@ public class Creature : MonoBehaviour
         for (int i = 0; i <= 5; i++) {
 			metersDictionary[(CreatureParams)i] += item.GetComponent<ThingObject>().metersEffect[(CreatureParams)i];
         }
+=======
+//	void DoAction(ThingObject item, CreatureParams action)
+	void DoAction(GameObject item, CreatureParams action)
+	{
+		Debug.Assert (item != null);
+		Debug.Log ("Performing action: " + action + " " + (int)action +  " on " + item);
+
+		// update meters only if action is not not-wanting
+		if ((int)action < 22) {
+			Debug.Log ("(int)action < 22");
+			// update the relevant meters according to the effect of the action
+			for (int i = 0; i <= 5; i++) {
+//			metersDictionary[(CreatureParams)i] += item.metersEffect[(CreatureParams)i];
+				// make sure meter isn't over 1 or under 0
+				metersDictionary [(CreatureParams)i] += item.GetComponent<ThingObject> ().metersEffect [(CreatureParams)i];
+				if (metersDictionary [(CreatureParams)i] < 0) {
+					metersDictionary [(CreatureParams)i] = 0;
+				}
+
+				if (metersDictionary [(CreatureParams)i] > 1) {
+					metersDictionary [(CreatureParams)i] = 1;
+				}
+			}
+>>>>>>> b4b9f7d494c638cab68de4c364eb5bc5f492b78f
+
+			// if item is a game, make it disappear and re-appear in another place (not on the creature)
+			if (item.GetComponent<ThingObject> ().itemType == ThingObject.ItemType.Game) {
+				item.transform.position = new Vector3 (0, 0, -999);
+			}
+		
+			
+			if (item.GetComponent<ThingObject> ().itemType == ThingObject.ItemType.Game) {
+				// return item after animation stopped playing TODO
+				item.transform.position = new Vector3 (5, UnityEngine.Random.Range (-3, 3), 0);
+			}
 
 
-        animator.SetInteger("action", (int)action);
-        animator.SetTrigger("canChange");
-        animator.SetInteger("mood", 0);
+			//		if (item.itemType != ThingObject.ItemType.Game)
+			if (item.GetComponent<ThingObject>().itemType != ThingObject.ItemType.Game)
+			{
+				//Debug.Log("item isnt a game");
+				if (action == CreatureParams.eating || action == CreatureParams.takingMedicine)
+				{
+					//Debug.Log("destroy item");
+					//Destroy(item);
+					item.transform.position = new Vector3(-100,-100,-999);
+					item.SetActive(false);
+				}
+			}
+		}
 
-
+<<<<<<< HEAD
 		if (item.GetComponent<ThingObject>().itemType != ThingObject.ItemType.Game)
         {
             //Debug.Log("item isnt game");
@@ -241,10 +305,16 @@ public class Creature : MonoBehaviour
             }
         }
         
+=======
+		animator.SetInteger("action", (int)action);
+		animator.SetTrigger("canChange");
+		animator.SetInteger("mood", 0);
+>>>>>>> b4b9f7d494c638cab68de4c364eb5bc5f492b78f
 
 
         // TODO add impact of the love to the performing player (should be implemented as a formula in the enum)
     }
+
 
     /// <summary>
     /// Calculate what is the creature's mood based on his meters, and update currentMood.
@@ -258,13 +328,13 @@ public class Creature : MonoBehaviour
 			var nextMoodScore = GetValue (currentMood, metersDictionary);
 
 			// find the mood with higest score
-			//foreach (var mood in moodsDictionary.Keys) {
-			//	var moodScore = GetValue (mood, metersDictionary);
-			//	if (moodScore > nextMoodScore) {
-			//		nextMood = mood;
-			//		nextMoodScore = moodScore;
-			//	}
-			//}
+			foreach (var mood in moodsDictionary.Keys) {
+				var moodScore = GetValue (mood, metersDictionary);
+				if (moodScore > nextMoodScore) {
+					nextMood = mood;
+					nextMoodScore = moodScore;
+				}
+			}
 
 			// change the current mood to the mood with the highest score
 			currentMood = nextMood;

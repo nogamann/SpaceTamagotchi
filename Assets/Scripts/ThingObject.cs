@@ -13,8 +13,26 @@ public class ThingObject : MonoBehaviour
         Medicine
     }
 
-	// Fileds
-	public float health;
+    public enum SpecificItemType
+    {
+        Sandwich,
+        SpaceBurget,
+        Chocolate,
+        Carrot,
+        Pill1,
+        Pill2,
+        Syrup,
+        Injection,
+        Ball,
+        Yoyo,
+        tranpoline,
+		cardboard
+	
+    }
+
+
+    // Fileds
+    public float health;
 	public float love;
 	public float hunger;
 	public float joy;
@@ -26,8 +44,9 @@ public class ThingObject : MonoBehaviour
 	public float attractiveness;
 
     public ItemType itemType;
+    public SpecificItemType specificTypeItem;
 
-	public Dictionary<Creature.CreatureParams, float> metersEffect;
+    public Dictionary<Creature.CreatureParams, float> metersEffect;
     
 
     void Awake(){

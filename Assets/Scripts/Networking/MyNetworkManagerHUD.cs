@@ -9,10 +9,11 @@ namespace UnityEngine.Networking
 	public class MyNetworkManagerHUD : MonoBehaviour
 	{
 		public NetworkManager manager;
-		public Creature creature;
+		public GameObject creature;
 		public Text showIP;
 		public Canvas loginCanvas;
 		public Canvas canvas;
+		public GameObject egg;
 		public InputField friendsIP;
 		[SerializeField] public bool showGUI = true;
 		[SerializeField] public int offsetX;
@@ -24,10 +25,12 @@ namespace UnityEngine.Networking
 		void Awake()
 		{
 			manager = GetComponent<NetworkManager>();
+
 		}
 
 		void Start(){
-			
+			canvas.enabled = false;
+
 		}
 
 		void Update()
@@ -73,7 +76,8 @@ namespace UnityEngine.Networking
 			manager.StartHost();
 			loginCanvas.enabled = false;
 			Debug.Log ("connected as host");
-			canvas.enabled = true;
+			startGame ();
+
 		}
 
 		public void client(){
@@ -81,7 +85,23 @@ namespace UnityEngine.Networking
 			manager.StartClient();
 			Debug.Log ("connected as client");
 			loginCanvas.enabled = false;
+			startGame ();
+		}
+
+		public void startGame(){
 			canvas.enabled = true;
+			creature.SetActive (true);
+
+			GameObject[] eggs = GameObject.FindGameObjectsWithTag ("Egg");
+			foreach (GameObject egg in eggs){
+				// play egg cracking animation
+				egg.SetActive (false);
+			}
+
+			GameObject[] bars = GameObject.FindGameObjectsWithTag ("Bar");
+			foreach (GameObject bar in bars){
+				bar.GetComponent<Bar> ().gameStarted = true;
+			}
 		}
 
 		void OnGUI()
@@ -97,33 +117,39 @@ namespace UnityEngine.Networking
 			string ip = Network.player.ipAddress;
 			showIP.text = "Tell your friend to enter: " + ip + " and click here";
 
-			if (!NetworkClient.active && !NetworkServer.active && manager.matchMaker == null)
-			{
-				if (GUI.Button(new Rect(280, 90, 100, 20), "host"))
-				{
-					
-					manager.StartHost();
-					loginCanvas.enabled = false;
-					canvas.enabled = true;
-				}
-//				ypos += spacing;
-//
-//				if (GUI.Button(new Rect(280, 180, 105, 20), "Client"))
+//			if (!NetworkClient.active && !NetworkServer.active && manager.matchMaker == null)
+//			{
+//				if (GUI.Button(new Rect(200, 90, 50, 20), "host"))
 //				{
-//					manager.networkAddress = friendsIP.text;
-//					manager.StartClient();
+//					
+//					manager.StartHost();
 //					loginCanvas.enabled = false;
+//					GameObject[] eggs = GameObject.FindGameObjectsWithTag ("Egg");
+//					foreach (GameObject egg in eggs){
+//						// play egg cracking animation
+//						egg.SetActive (false);
+//
+//					}
 //					canvas.enabled = true;
 //				}
-//				manager.networkAddress = GUI.TextField(new Rect(xpos + 100, ypos, 95, 20), manager.networkAddress);
-//				ypos += spacing;
-//
-//				if (GUI.Button(new Rect(xpos, ypos, 200, 20), "LAN Server Only(S)"))
-//				{
-//					manager.StartServer();
-//				}
-//				ypos += spacing;
-			}
+////				ypos += spacing;
+////
+////				if (GUI.Button(new Rect(280, 180, 105, 20), "Client"))
+////				{
+////					manager.networkAddress = friendsIP.text;
+////					manager.StartClient();
+////					loginCanvas.enabled = false;
+////					canvas.enabled = true;
+////				}
+////				manager.networkAddress = GUI.TextField(new Rect(xpos + 100, ypos, 95, 20), manager.networkAddress);
+////				ypos += spacing;
+////
+////				if (GUI.Button(new Rect(xpos, ypos, 200, 20), "LAN Server Only(S)"))
+////				{
+////					manager.StartServer();
+////				}
+////				ypos += spacing;
+//			}
 //			else
 //			{
 //				if (NetworkServer.active)

@@ -148,11 +148,17 @@ public class TouchControl : NetworkBehaviour
 		}
  		local.FreeItem (gameObject);
         isDragged = false;
+
         int creatureLayer = LayerMask.GetMask("creature");
         Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position), creatureLayer);
         if (hit != null)
         {
             Debug.Log("hit creature");
+<<<<<<< HEAD
+=======
+			Debug.Assert (this.GetComponent<ThingObject> () != null);
+//            creature.ChooseAction(this.GetComponent<ThingObject>());
+>>>>>>> b4b9f7d494c638cab68de4c364eb5bc5f492b78f
 			creature.ChooseAction(gameObject);
         }
     }
