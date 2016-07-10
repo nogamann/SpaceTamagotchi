@@ -153,7 +153,7 @@ public class TouchControl : NetworkBehaviour
         if (hit != null)
         {
             Debug.Log("hit creature");
-            creature.ChooseAction(this.GetComponent<ThingObject>());
+			creature.ChooseAction(gameObject);
         }
     }
 
