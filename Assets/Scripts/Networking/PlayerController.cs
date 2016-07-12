@@ -65,4 +65,66 @@ public class PlayerController : NetworkBehaviour {
 			gameManager.addObject(type);
 		}
 	}
+
+	public void doAction(GameObject item, Creature.CreatureParams action){
+		CmdDoAction(item,action);
+		float love = item.GetComponent<ThingObject> ().Love;
+		Debug.Log ("this is me doing this, id " + playerControllerId + isServer);
+		if (isServer) {
+			CmdUpdatePlayerOneLove (love);
+		} else {
+			CmdUpdatePlayerTwoLove (love);
+		}
+	}
+
+	[Command]
+	void CmdDoAction(GameObject item, Creature.CreatureParams action){
+		gameManager.doAction (item, action);
+	}
+
+	[Command]
+	void CmdUpdatePlayerOneLove(float amount){
+		gameManager.UpdatePlayerOneLove (amount);
+	}
+
+	[Command]
+	void CmdUpdatePlayerTwoLove(float amount){
+		gameManager.UpdatePlayerTwoLove (amount);
+	}
+
+	public void updatePlayerOneLove(float amount){
+		CmdUpdatePlayerOneLove (amount);
+	}
+
+	public void updatePlayerTwoLove(float amount){
+		CmdUpdatePlayerTwoLove (amount);
+	}
+
+//
+//	public void GreyOutItem(GameObject item){
+//		item.GetComponent<SpriteRenderer> ().color = new Color (.5f, .5f, .5f, .5f);
+//	}
+//
+//	public void RecolorItem(GameObject item){
+//		item.GetComponent<SpriteRenderer> ().color = new Color (1,1,1,1);
+//	}
+
+//	public void playActionAnimation(Creature.CreatureParams action){
+//		CmdPlayActionAnimation (action);
+//	}
+//
+//	[Command]
+//	void CmdPlayActionAnimation(Creature.CreatureParams action){
+//		gameManager.playActionAnimation (action);
+//	}
+//
+//	public void playMoodAnimation(Creature.CreatureParams mood){
+//		CmdPlayActionAnimation (mood);
+//	}
+//
+//	[Command]
+//	void CmdPlayMoodAnimation(Creature.CreatureParams mood){
+//		gameManager.playMoodAnimation (mood);
+//	}
+
 }

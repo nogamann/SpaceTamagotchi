@@ -8,6 +8,7 @@ TagManager:
   - Finger
   - Egg
   - Bar
+  - Creature
   layers:
   - Default
   - TransparentFX

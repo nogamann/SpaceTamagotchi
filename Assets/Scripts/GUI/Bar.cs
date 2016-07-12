@@ -7,7 +7,8 @@ public class Bar : MonoBehaviour
     public enum BarType
     {
         HealthBar,
-        LoveBar,
+        LovePlayerOneBar,
+		LovePlayerTwoBar,
         HungerBar,
         JoyBar
     }
@@ -15,6 +16,7 @@ public class Bar : MonoBehaviour
     public BarType barType;
     public Scrollbar scrollBar;
     public Creature creature;
+	public GameManager gameManager;
 	public bool gameStarted = false;
 
     // Update is called once per frame
@@ -34,8 +36,12 @@ public class Bar : MonoBehaviour
 				scrollBar.size = creature.metersDictionary [Creature.CreatureParams.joy];
 				break;
 
-			case BarType.LoveBar:
-				scrollBar.size = creature.metersDictionary [Creature.CreatureParams.generalLove];
+			case BarType.LovePlayerOneBar:
+				scrollBar.size = gameManager.playerOneLove;
+				break;
+			
+			case BarType.LovePlayerTwoBar:
+				scrollBar.size = gameManager.playerTwoLove;
 				break;
 
 			//TODO add cases for playerOneLove and playerTwoLove

@@ -8,6 +8,7 @@ public class TouchControl : NetworkBehaviour
 {
 
     private bool isDragged;
+	public bool isTickled;
     Vector3 offset;
     Vector2 vec2Position;
     float zAxisPos;
@@ -15,6 +16,7 @@ public class TouchControl : NetworkBehaviour
     Touch draggingTouch;
     Vector3 touchPosition;
     public Camera mainCamera;
+	public bool disabled = false;
 
     Creature creature;
 
@@ -104,60 +106,91 @@ public class TouchControl : NetworkBehaviour
 
     private void OnTouchDrag(PointerEventData obj)
     {
-		if (isDragged & hasAuthority)
-        {
-            Vector3 touchWorldPos = mainCamera.ScreenToWorldPoint(obj.position);
+		if (isDragged & hasAuthority) {
+			Vector3 touchWorldPos = mainCamera.ScreenToWorldPoint (obj.position);
 
-            this.transform.position = touchWorldPos + offset;
-
-        }
+			this.transform.position = touchWorldPos + offset;
+		}
     }
 
     private void OnTouchDown(PointerEventData obj)
     {
-		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Finger");
-		PlayerController local = null;
-		foreach (GameObject go in objects){
-			PlayerController pc = go.GetComponent<PlayerController>();
-			if (pc.isLocalPlayer) {
-				local = pc;
-			}
+		int creatureLayer = LayerMask.GetMask ("creature");
+		Collider2D hitCreature = Physics2D.OverlapPoint (mainCamera.ScreenToWorldPoint (obj.position), creatureLayer);
+		if (hitCreature != null) {
+//			Debug.Log ("touched creature");
+			isTickled = true;
+//			creature.tickled ();
 		}
-		Debug.Assert (gameObject != null);
-		Debug.Assert (local != null);
-		local.GrabItem (gameObject);
 
-        Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position));
-        if (hit != null && hit == this.GetComponent<Collider2D>())
-        {
-            offset = (this.transform.position - mainCamera.ScreenToWorldPoint(obj.position));
-            isDragged = true;
-        }
+		// ignore disable items - food that's been eaten etc.
+		if (!disabled){
+			// Original code
+	        Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position));
+	        if (hit != null && hit == this.GetComponent<Collider2D>())
+	        {
+				// set authority to the local player that touched the item
+				GameObject[] objects = GameObject.FindGameObjectsWithTag ("Finger");
+				PlayerController local = null;
+				foreach (GameObject go in objects){
+					PlayerController pc = go.GetComponent<PlayerController>();
+					if (pc.isLocalPlayer) {
+						local = pc;
+					}
+				}
+				Debug.Assert (gameObject != null);
+				Debug.Assert (local != null);
+				local.GrabItem (gameObject);
+
+
+	            offset = (this.transform.position - mainCamera.ScreenToWorldPoint(obj.position));
+	            isDragged = true;
+	        }
+	//		this.GetComponent<SpriteRenderer> ().color = new Color (.5f, .5f, .5f, .5f);
+		}
     }
-
 
     private void OnTouchUp(PointerEventData obj)
     {
-		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Finger");
-		PlayerController local = null;
-		foreach (GameObject go in objects){
-			PlayerController pc = go.GetComponent<PlayerController>();
-			if (pc.isLocalPlayer) {
-				local = pc;
+		
+
+		if (!disabled){
+			if (isDragged) {
+				// release client authority
+				GameObject[] objects = GameObject.FindGameObjectsWithTag ("Finger");
+				PlayerController local = null;
+				foreach (GameObject go in objects) {
+					PlayerController pc = go.GetComponent<PlayerController> ();
+					if (pc.isLocalPlayer) {
+						local = pc;
+					}
+				}
+
+				local.FreeItem (gameObject);
+				isDragged = false;
+
+				int creatureLayer = LayerMask.GetMask ("creature");
+				Collider2D hit = Physics2D.OverlapPoint (mainCamera.ScreenToWorldPoint (obj.position), creatureLayer);
+				if (hit != null) {
+					Debug.Log ("hit creature");
+					Debug.Assert (this.GetComponent<ThingObject> () != null);
+					//            creature.ChooseAction(this.GetComponent<ThingObject>());
+					creature.ChooseAction (gameObject);
+					return;
+				}
+			}
+			//		this.GetComponent<SpriteRenderer> ().color = new Color (1,1,1,1);
+
+			if (isTickled) {
+				int creatureLayer = LayerMask.GetMask ("creature");
+				Collider2D hit = Physics2D.OverlapPoint (mainCamera.ScreenToWorldPoint (obj.position), creatureLayer);
+				if (hit != null) {
+					Debug.Log ("tickled creature");
+					creature.tickled ();
+				}
+				isTickled = false;
 			}
 		}
- 		local.FreeItem (gameObject);
-        isDragged = false;
-
-        int creatureLayer = LayerMask.GetMask("creature");
-        Collider2D hit = Physics2D.OverlapPoint(mainCamera.ScreenToWorldPoint(obj.position), creatureLayer);
-        if (hit != null)
-        {
-            Debug.Log("hit creature");
-			Debug.Assert (this.GetComponent<ThingObject> () != null);
-//            creature.ChooseAction(this.GetComponent<ThingObject>());
-			creature.ChooseAction(gameObject);
-        }
     }
 
 }

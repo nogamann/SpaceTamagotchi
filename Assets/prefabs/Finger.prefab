@@ -12,6 +12,7 @@ GameObject:
   - 114: {fileID: 11436812}
   - 114: {fileID: 11474558}
   - 114: {fileID: 11471392}
+  - 114: {fileID: 11440328}
   m_Layer: 0
   m_Name: Finger
   m_TagString: Finger
@@ -63,6 +64,20 @@ MonoBehaviour:
     i15: 25
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &11440328
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e4c9cc03cba4b4fb9a5154a9df566b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTickled: 0
+  mainCamera: {fileID: 0}
+  disabled: 0
 --- !u!114 &11471392
 MonoBehaviour:
   m_ObjectHideFlags: 1

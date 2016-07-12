@@ -36,8 +36,8 @@ public class ThingObject : MonoBehaviour
 	public float love;
 	public float hunger;
 	public float joy;
-    public float playerOneLove;
-    public float playerTwoLove;
+    public float myLove;
+    public float otherLove;
     public int price;
 
 	// the level of atractiveness of the item to the creature
@@ -54,8 +54,8 @@ public class ThingObject : MonoBehaviour
 			{ Creature.CreatureParams.joy, joy },
 			{ Creature.CreatureParams.health, health },
 			{ Creature.CreatureParams.hunger, hunger },
-            { Creature.CreatureParams.playerOneLove, playerOneLove },
-            { Creature.CreatureParams.playerTwoLove, playerTwoLove },
+			{ Creature.CreatureParams.myLove, myLove },
+			{ Creature.CreatureParams.otherLove, OtherLove },
             { Creature.CreatureParams.generalLove, love }
 		};
 	}
@@ -97,27 +97,27 @@ public class ThingObject : MonoBehaviour
 		}
 	}
 
-    public float PlayerTwoLove
+    public float OtherLove
     {
         get
         {
-            return playerTwoLove;
+			return otherLove;
         }
         set
         {
-            playerTwoLove = value;
+			otherLove = value;
         }
     }
 
-    public float PlayerOneLove
+    public float MyLove
     {
         get
         {
-            return playerOneLove;
+			return myLove;
         }
         set
         {
-            playerOneLove = value;
+			myLove = value;
         }
     }
 

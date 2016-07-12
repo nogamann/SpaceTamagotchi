@@ -11,7 +11,9 @@ public class BuyItemButton : MonoBehaviour {
     {
         this.GetComponent<Image>().sprite = itemPrefab.GetComponent<SpriteRenderer>().sprite;
 		Debug.Log ("sprite on button");
-        this.GetComponentInChildren<Text>().text = itemPrefab.GetComponent<ThingObject>().price + "$";
+		Text text = this.GetComponentInChildren<Text> ();
+		text.text = itemPrefab.GetComponent<ThingObject>().price + "$";
+		text.fontStyle = FontStyle.Bold;
     }
 
 	public void TryToBuy()

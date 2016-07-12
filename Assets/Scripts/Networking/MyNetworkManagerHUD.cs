@@ -13,6 +13,7 @@ namespace UnityEngine.Networking
 		public Text showIP;
 		public Canvas loginCanvas;
 		public Canvas canvas;
+		public Canvas gameOverCanvas;
 		public GameObject egg;
 		public InputField friendsIP;
 		[SerializeField] public bool showGUI = true;
@@ -30,7 +31,7 @@ namespace UnityEngine.Networking
 
 		void Start(){
 			canvas.enabled = false;
-
+			gameOverCanvas.enabled = false;
 		}
 
 		void Update()
@@ -76,6 +77,7 @@ namespace UnityEngine.Networking
 			manager.StartHost();
 			loginCanvas.enabled = false;
 			Debug.Log ("connected as host");
+			creature.GetComponent<Creature> ().player = 1;
 			startGame ();
 
 		}
@@ -84,12 +86,14 @@ namespace UnityEngine.Networking
 			manager.networkAddress = friendsIP.text;
 			manager.StartClient();
 			Debug.Log ("connected as client");
+			creature.GetComponent<Creature> ().player = 2;
 			loginCanvas.enabled = false;
 			startGame ();
 		}
 
 		public void startGame(){
 			canvas.enabled = true;
+
 			creature.SetActive (true);
 
 			GameObject[] eggs = GameObject.FindGameObjectsWithTag ("Egg");

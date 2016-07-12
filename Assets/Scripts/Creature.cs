@@ -19,8 +19,8 @@ public class Creature : MonoBehaviour
 		health = 1,
 		hunger = 2,
 		generalLove = 3,
-		playerOneLove = 4,
-		playerTwoLove = 5,
+		myLove = 4,
+		otherLove = 5,
 		happy = 6,
 		sad = 7,
 		hungry = 8,
@@ -38,8 +38,8 @@ public class Creature : MonoBehaviour
 		healthComplement = 24,
 		hungerComplement = 25,
 		generalLoveComplement = 26,
-		playerOneLoveComplement = 27,
-		playerTwoLoveComplement = 28,
+		myLoveComplement = 27,
+		otherLoveComplement = 28,
 		notWantingToPlay = 29,
 		notWantingToEat = 30,
 		notWantingToTakeMed = 31
@@ -54,9 +54,11 @@ public class Creature : MonoBehaviour
     public float hungerUpdate;
     public float healthUpdate;
     public float joyUpdate;
-    public float playerOneLoveUpdate;
-    public float playrTwoLoveUpdate;
-    public float generalLoveUpdate;
+//    public float playerOneLoveUpdate;
+//    public float playerTwoLoveUpdate;
+
+	// one is server, two is client
+	public int player;
 
 	public Creature creature;
 
@@ -79,8 +81,10 @@ public class Creature : MonoBehaviour
 
 	public CreatureParams currentMood;
 
-	ThingObject burgerItem;
-	GameObject hamburger;
+//	ThingObject burgerItem;
+//	GameObject hamburger;
+
+	public GameObject gameManager;
 
     Animator animator;
 
@@ -129,9 +133,8 @@ public class Creature : MonoBehaviour
 			{CreatureParams.joy, 0.8f},
 			{CreatureParams.hunger, 0.8f},
 			{CreatureParams.health, 0.8f},
-			{CreatureParams.generalLove, 0.8f},
-			{CreatureParams.playerOneLove, 0.8f},
-			{CreatureParams.playerTwoLove, 0.8f},
+			{CreatureParams.myLove, 0.8f},
+			{CreatureParams.otherLove, 0.8f},
 			{CreatureParams.one, 1}
 		};
 			
@@ -155,25 +158,37 @@ public class Creature : MonoBehaviour
 		// update mood
 		StartCoroutine(CalculateAndUpdateMood ());
 
-		// TODO remove after debug!
-		if (Input.GetKeyDown (KeyCode.C)) {
-			Debug.Log ("'c' is pressed!");
-			Debug.Assert (this.hamburger != null);
-			//ChooseAction (this.hamburger);
-		}
+//		// TODO remove after debug!
+//		if (Input.GetKeyDown (KeyCode.C)) {
+//			Debug.Log ("'c' is pressed!");
+//			Debug.Assert (this.hamburger != null);
+//			//ChooseAction (this.hamburger);
+//		}
 	}
 
 	void FixedUpdate()
 	{
+		if (player == 1) {
+			metersDictionary [CreatureParams.myLove] = gameManager.GetComponent<GameManager> ().playerOneLove;
+			metersDictionary [CreatureParams.otherLove] = gameManager.GetComponent<GameManager> ().playerTwoLove;
+		} else {
+			metersDictionary [CreatureParams.myLove] = gameManager.GetComponent<GameManager> ().playerTwoLove;
+			metersDictionary [CreatureParams.otherLove] = gameManager.GetComponent<GameManager> ().playerOneLove;
+		}
+
 		// update meters as time passes
 		DecreaseMeters ();
 	}
 
 	void IsDead()
 	{
-		if (metersDictionary[CreatureParams.joy] <= 0.1 && metersDictionary[CreatureParams.health] <= 0.1 && metersDictionary[CreatureParams.generalLove] <= 0.1)
+		if (GetValue(CreatureParams.joy, metersDictionary) <= 0.1 &&
+			GetValue(CreatureParams.hunger, metersDictionary) <= 0.1 &&
+			GetValue(CreatureParams.health, metersDictionary) <= 0.1 &&
+			GetValue(CreatureParams.generalLove, metersDictionary) <= 0.1 )
 		{
-			// TODO game over
+			gameManager.GetComponent<GameManager>().GameOver();
+			this.GetComponentInChildren<SpriteRenderer> ().color = new Color (1,1,1,0.2f);
 		}
 	}
 
@@ -204,7 +219,7 @@ public class Creature : MonoBehaviour
 
 
 		// TODO create an idle action to prevent null pointer exception in the rare case no action was chosen
-		CreatureParams chosenAction = CreatureParams.eating;
+		CreatureParams chosenAction = CreatureParams.blinking;
 		float actionScore = 0.0f;
 
 		// calculate the possible actions' scores according to it's type
@@ -219,7 +234,20 @@ public class Creature : MonoBehaviour
 		Debug.Log ("Chosen action is: " + chosenAction);
 
         // perform the chosen action
-        DoAction(item, chosenAction);
+		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Finger");
+		PlayerController local = null;
+		foreach (GameObject go in objects){
+			PlayerController pc = go.GetComponent<PlayerController>();
+			if (pc.isLocalPlayer) {
+				local = pc;
+			}
+		}
+		Debug.Assert (gameObject != null);
+		Debug.Assert (local != null);
+		local.doAction (item, chosenAction);
+
+//		gameManager.GetComponent<GameManager>().doAction(item, chosenAction);
+//        DoAction(item, chosenAction);
     }
 
 	/// <summary>
@@ -228,16 +256,15 @@ public class Creature : MonoBehaviour
 	/// <param name="item">Item.</param>
 	/// <param name="action">Action.</param>
 //	void DoAction(ThingObject item, CreatureParams action)
-	void DoAction(GameObject item, CreatureParams action)
+	public void DoAction(GameObject item, CreatureParams action)
 	{
 		Debug.Assert (item != null);
 		Debug.Log ("Performing action: " + action + " " + (int)action +  " on " + item);
 
 		// update meters only if action is not not-wanting
-		if ((int)action < 22) {
-			Debug.Log ("(int)action < 22");
+		if ((int)action < 22 ) {
 			// update the relevant meters according to the effect of the action
-			for (int i = 0; i <= 5; i++) {
+			for (int i = 0; i <= 2; i++) {
 //			metersDictionary[(CreatureParams)i] += item.metersEffect[(CreatureParams)i];
 				// make sure meter isn't over 1 or under 0
 				metersDictionary [(CreatureParams)i] += item.GetComponent<ThingObject> ().metersEffect [(CreatureParams)i];
@@ -248,6 +275,13 @@ public class Creature : MonoBehaviour
 				if (metersDictionary [(CreatureParams)i] > 1) {
 					metersDictionary [(CreatureParams)i] = 1;
 				}
+			}
+
+			float love = item.GetComponent<ThingObject> ().metersEffect [CreatureParams.generalLove];
+			if (player == 1) {
+				gameManager.GetComponent<GameManager> ().UpdatePlayerOneLove (love);
+			} else {
+				gameManager.GetComponent<GameManager> ().UpdatePlayerTwoLove (love);
 			}
 
 			// if item is a game, make it disappear and re-appear in another place (not on the creature)
@@ -272,6 +306,7 @@ public class Creature : MonoBehaviour
 					//Destroy(item);
 					item.transform.position = new Vector3(-100,-100,-999);
 					item.SetActive(false);
+					item.GetComponent<TouchControl> ().disabled = true;
 				}
 			}
 		}
@@ -279,9 +314,6 @@ public class Creature : MonoBehaviour
 		animator.SetInteger("action", (int)action);
 		animator.SetTrigger("canChange");
 		animator.SetInteger("mood", 0);
-
-
-        // TODO add impact of the love to the performing player (should be implemented as a formula in the enum)
     }
 
 
@@ -308,6 +340,8 @@ public class Creature : MonoBehaviour
 			// change the current mood to the mood with the highest score
 			currentMood = nextMood;
 
+//			local.playMoodAnimation (currentMood);
+
             if (animator.GetInteger("mood") != (int)currentMood)
             {
                 animator.SetInteger("mood", (int)currentMood);
@@ -331,7 +365,6 @@ public class Creature : MonoBehaviour
 		metersDictionary[CreatureParams.joy] += joyUpdate * Time.fixedDeltaTime;
 		metersDictionary[CreatureParams.health] += healthUpdate * Time.fixedDeltaTime;
 		metersDictionary[CreatureParams.hunger] += hungerUpdate * Time.fixedDeltaTime;
-		metersDictionary[CreatureParams.generalLove] += generalLoveUpdate * Time.fixedDeltaTime;
     }
 
 	/// <summary>
@@ -344,6 +377,43 @@ public class Creature : MonoBehaviour
 		if (values.ContainsKey(parameter)) return values[parameter];
 		if (formulasDictionary.ContainsKey(parameter)) return formulasDictionary[parameter].Eval(values);
 		throw new Exception("No parameter " + parameter + " given and no formula to calculate it");
+	}
+
+	public void tickled(){
+		CreatureParams chosenAction = CreatureParams.blinking;
+
+		float lovingScore = GetValue(CreatureParams.loving, metersDictionary);
+		if (lovingScore > 1 - lovingScore) {
+			chosenAction = CreatureParams.loving;
+
+			// update joy
+			metersDictionary[CreatureParams.joy] += 0.1f;
+			if (metersDictionary [CreatureParams.joy] < 0) {
+				metersDictionary [CreatureParams.joy] = 0;
+			}
+
+			if (metersDictionary [CreatureParams.joy] > 1) {
+				metersDictionary [CreatureParams.joy] = 1;
+			}
+
+			// update love
+			float love = 0.1f;
+			if (player == 1) {
+				gameManager.GetComponent<GameManager> ().UpdatePlayerOneLove (love);
+			} else {
+				gameManager.GetComponent<GameManager> ().UpdatePlayerTwoLove (love);
+			}
+
+		} else {
+			chosenAction = CreatureParams.notWanting;
+		}
+
+		Debug.Log ("Chosen action is: " + chosenAction);
+		Debug.Log ("Performing action: " + chosenAction + " " + (int)chosenAction);
+
+		animator.SetInteger("action", (int)chosenAction);
+		animator.SetTrigger("canChange");
+		animator.SetInteger("mood", 0);
 	}
 
 	/// <summary>
