@@ -121,4 +121,8 @@ public class ThingObject : MonoBehaviour
         }
     }
 
+	void OnDestroy()
+	{
+		Debug.Log (Application.stackTraceLogType);
+	}
 }
