@@ -193,6 +193,10 @@ Prefab:
       value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 11439286, guid: 19dbead196376e9428d24d84920235ac, type: 2}
+      propertyPath: _yoyoActions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439286, guid: 19dbead196376e9428d24d84920235ac, type: 2}
       propertyPath: _formulas.Array.data[0].components.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -342,7 +346,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11439286, guid: 19dbead196376e9428d24d84920235ac, type: 2}
       propertyPath: healthUpdate
-      value: -0.002
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: 11439286, guid: 19dbead196376e9428d24d84920235ac, type: 2}
       propertyPath: _formulas.Array.data[12].creature
@@ -947,6 +951,14 @@ Prefab:
     - target: {fileID: 6048552, guid: 19dbead196376e9428d24d84920235ac, type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439286, guid: 19dbead196376e9428d24d84920235ac, type: 2}
+      propertyPath: hungerUpdate
+      value: -0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439286, guid: 19dbead196376e9428d24d84920235ac, type: 2}
+      propertyPath: joyUpdate
+      value: -0.01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 19dbead196376e9428d24d84920235ac, type: 2}
@@ -2823,6 +2835,10 @@ Prefab:
       propertyPath: gameOverCanvas
       value: 
       objectReference: {fileID: 1935667116}
+    - target: {fileID: 11421802, guid: 075aba84ef317a04f8e9df4828ca58d1, type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1482588049}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 075aba84ef317a04f8e9df4828ca58d1, type: 2}
   m_IsPrefabParent: 0
@@ -4391,6 +4407,21 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 310abf1608ba50b4496f21ae61a25eac, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1590958936 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 141016, guid: 19dbead196376e9428d24d84920235ac, type: 2}
+  m_PrefabInternal: {fileID: 23311094}
+--- !u!114 &1590958941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1590958936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 397e634625edda941bde88bf360e789f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1636651987 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11421802, guid: 075aba84ef317a04f8e9df4828ca58d1,

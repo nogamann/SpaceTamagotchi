@@ -61,6 +61,7 @@ public class Creature : MonoBehaviour
 	public int player;
 
 	public Creature creature;
+	public GameObject yoyo;
 
 	public Formula[] _formulas;
 	public CreatureParams[] _moods;
@@ -284,38 +285,50 @@ public class Creature : MonoBehaviour
 				gameManager.GetComponent<GameManager> ().UpdatePlayerTwoLove (love);
 			}
 
-			// if item is a game, make it disappear and re-appear in another place (not on the creature)
-			if (item.GetComponent<ThingObject> ().itemType == ThingObject.ItemType.Game) {
-				item.transform.position = new Vector3 (0, 0, -999);
-			}
-		
-			
-			if (item.GetComponent<ThingObject> ().itemType == ThingObject.ItemType.Game) {
-				// return item after animation stopped playing TODO
-				item.transform.position = new Vector3 (5, UnityEngine.Random.Range (-3, 3), 0);
-			}
 
 
 			//		if (item.itemType != ThingObject.ItemType.Game)
-			if (item.GetComponent<ThingObject>().itemType != ThingObject.ItemType.Game)
+
+			//Debug.Log("item isnt a game");
+			if (action == CreatureParams.eating || action == CreatureParams.takingMedicine)
 			{
-				//Debug.Log("item isnt a game");
-				if (action == CreatureParams.eating || action == CreatureParams.takingMedicine)
-				{
-					//Debug.Log("destroy item");
-					//Destroy(item);
-					item.transform.position = new Vector3(-100,-100,-999);
-					item.SetActive(false);
-					item.GetComponent<TouchControl> ().disabled = true;
+				//Debug.Log("destroy item");
+				//Destroy(item);
+				item.transform.position = new Vector3(-100,-100,-999);
+				item.SetActive(false);
+				item.GetComponent<TouchControl> ().disabled = true;
+			}
+			//if is game
+			if (action == CreatureParams.playing) {
+				// if item is a game, make it disappear and re-appear in another place (not on the creature)
+				item.SetActive(false);
+
+				// if it's yoyo, make it disappear while animation is playing
+				if (item.GetComponent<ThingObject> ().specificTypeItem == ThingObject.SpecificItemType.Yoyo) {
+					yoyo = item;
 				}
+				// play happy if playing with something other than yoyo
+				else {
+					action = CreatureParams.happy;
+					item.SetActive (true);
+					item.transform.position = new Vector3 (5, UnityEngine.Random.Range (-3, 3), 0);
+				}
+
 			}
 		}
+
+
 
 		animator.SetInteger("action", (int)action);
 		animator.SetTrigger("canChange");
 		animator.SetInteger("mood", 0);
     }
 
+	public void AnimationEnded(){
+		yoyo.SetActive (true);
+		yoyo.transform.position = new Vector3 (5, UnityEngine.Random.Range (-3, 3), 0);
+
+	}
 
     /// <summary>
     /// Calculate what is the creature's mood based on his meters, and update currentMood.

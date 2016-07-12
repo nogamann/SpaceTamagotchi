@@ -69,7 +69,6 @@ public class PlayerController : NetworkBehaviour {
 	public void doAction(GameObject item, Creature.CreatureParams action){
 		CmdDoAction(item,action);
 		float love = item.GetComponent<ThingObject> ().Love;
-		Debug.Log ("this is me doing this, id " + playerControllerId + isServer);
 		if (isServer) {
 			CmdUpdatePlayerOneLove (love);
 		} else {

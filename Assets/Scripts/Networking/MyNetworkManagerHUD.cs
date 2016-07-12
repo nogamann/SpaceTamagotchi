@@ -75,6 +75,7 @@ namespace UnityEngine.Networking
 
 		public void host(){
 			manager.StartHost();
+			loginCanvas.enabled = false;
 			Debug.Log ("connected as host");
 			creature.GetComponent<Creature> ().player = 1;
 			startGame ();
@@ -86,11 +87,11 @@ namespace UnityEngine.Networking
 			manager.StartClient();
 			Debug.Log ("connected as client");
 			creature.GetComponent<Creature> ().player = 2;
+			loginCanvas.enabled = false;
 			startGame ();
 		}
 
 		public void startGame(){
-			loginCanvas.enabled = false;
 			canvas.enabled = true;
 
 			creature.SetActive (true);

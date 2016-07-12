@@ -145,8 +145,10 @@ public class TouchControl : NetworkBehaviour
 
 	            offset = (this.transform.position - mainCamera.ScreenToWorldPoint(obj.position));
 	            isDragged = true;
+
+				this.GetComponent<SpriteRenderer> ().color = new Color (.5f, .5f, .5f, .5f);
 	        }
-	//		this.GetComponent<SpriteRenderer> ().color = new Color (.5f, .5f, .5f, .5f);
+
 		}
     }
 
@@ -168,6 +170,7 @@ public class TouchControl : NetworkBehaviour
 
 				local.FreeItem (gameObject);
 				isDragged = false;
+				this.GetComponent<SpriteRenderer> ().color = new Color (1,1,1,1);
 
 				int creatureLayer = LayerMask.GetMask ("creature");
 				Collider2D hit = Physics2D.OverlapPoint (mainCamera.ScreenToWorldPoint (obj.position), creatureLayer);
@@ -178,8 +181,9 @@ public class TouchControl : NetworkBehaviour
 					creature.ChooseAction (gameObject);
 					return;
 				}
+
 			}
-			//		this.GetComponent<SpriteRenderer> ().color = new Color (1,1,1,1);
+					
 
 			if (isTickled) {
 				int creatureLayer = LayerMask.GetMask ("creature");
